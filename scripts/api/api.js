@@ -1,8 +1,11 @@
 const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
-const env = require('./env/env.base.json');
+const env = require('../env/env.base.json');
 const spaces = '  ';
+const config = require('./api.config.json');
+const apiConfig = require('./apiConfig');
+
 const toCamelCase = str => {
   const reCamelCase = /-(\w)/g;
   return str.replace(reCamelCase, (a, b) => {
@@ -23,7 +26,10 @@ class apiGenerator {
   }
 
   generate() {
-    let url = `http://api-dev.lajsf.com/gateway/${this.serviceName}/v2/api-docs`;
+    const name = config[this.serviceName]
+      ? config[this.serviceName].serviceName
+      : this.serviceName;
+    let url = `http://api-dev.lajsf.com/gateway/${name}/v2/api-docs`;
     axios
       .get(url)
       .then(res => {
@@ -191,12 +197,13 @@ class apiGenerator {
     return typeDefinition.typeName;
   }
   generateFile() {
-    const apiDir = path.join(__dirname, '..', 'src/api');
+    const apiDir = path.join(__dirname, '../..', 'src/api');
     if (!fs.existsSync(apiDir)) {
       fs.mkdirSync(apiDir);
     }
     let tsContent = [
-      `import {httpPost,httpGet,httpPut,httpDelete} from "@/service/http"`,
+      `import { httpPost, httpGet, httpPut, httpDelete } from "@/service/http"`,
+      `import config from '../../scripts/api/api.config.json'`,
     ];
     tsContent.push(`type int = number;
 		type List<T> = Array<T>
@@ -355,7 +362,11 @@ class apiGenerator {
         arr.push(
           `${spaces.repeat(intent + 2)}return ${toCamelCase(
             'http-' + method,
-          )}(\`/${this.serviceName}${url}\`${d2}${p2}).then((res:any) => res)`,
+          )}(\`/$\{config['${this.serviceName}'] ? config["${
+            this.serviceName
+          }"].serviceName : '${
+            this.serviceName
+          }'}${url}\`${d2}${p2}).then((res:any) => res)`,
         );
         arr.push(`${spaces.repeat(intent + 1)}},`);
       }
@@ -364,11 +375,7 @@ class apiGenerator {
   }
 }
 
-// platform-user          用户服务
-// platform-behavior   		用户行为服务
-// platform-support    		支撑服务
-
-['platform-support', 'business'].forEach(serviceName => {
+apiConfig.serviceNames.forEach(serviceName => {
   let api = new apiGenerator(serviceName);
   api.generate();
 });

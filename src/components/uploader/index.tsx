@@ -1,22 +1,18 @@
-import {
-  useCallback,
+import React,{
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from 'react';
-import { Upload, UploadProps } from 'antd';
+import { Upload } from 'antd';
+import { UploadProps } from 'antd/lib/upload'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import './index.scss';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { upload as uploadRequest } from '@/utils/upload';
-import React from 'react';
-import { shallowEqual } from '@/utils/toos';
+import './index.scss';
 
-interface UploaderProps extends UploadProps {}
-
-const Uploader: React.ForwardRefRenderFunction<any, UploaderProps> = (
+const Uploader: React.ForwardRefRenderFunction<any, UploadProps> = (
   props,
   ref,
 ) => {
@@ -31,7 +27,7 @@ const Uploader: React.ForwardRefRenderFunction<any, UploaderProps> = (
   }, [fileList]);
 
   useEffect(() => {
-    if (previousFileList.current.length === props.fileList?.length) {
+    if (previousFileList.current.length === props && props.fileList &&props.fileList.length) {
       if (
         props.fileList.every(
           (item, index) => item.url === previousFileList.current[index]?.url,

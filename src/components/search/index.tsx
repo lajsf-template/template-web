@@ -1,74 +1,65 @@
 import React, { useState } from 'react';
-import {
-  DatePicker,
-  Select,
-  Input,
-  Button,
-  InputProps,
-  DatePickerProps,
-} from 'antd';
+import { DatePicker, Select, Input, Button } from 'antd';
+import DatePickerProps from 'antd';
+import InputProps from 'antd/lib/input';
 import './index.less';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 export interface FormItemIpo {
-  /**表单类型daterange（日期区间）date（日期）select radio input */
+  /** 表单类型: daterange（日期区间）| date（日期）| select(选择) | input(输入框) */
   type: string;
-  /**表单标签文字说明 */
+  /** 表单标签文字说明 */
   label?: string;
-  /**表单placeholder */
+  /** 表单placeholder */
   placeholder?: string;
-  /**表单传入服务端的字段名称 */
+  /** 表单传入服务端的字段名称 */
   key: string;
-  /**表单宽度 */
+  /** 表单宽度 */
   width?: number;
-  /**字段对应的值 */
+  /** 字段对应的值 */
   value?: any;
-  /**是否带搜索功能 */
+  /** 是否带搜索功能 */
   showSearch?: boolean;
-  /**额外数据：例如下拉的配置项 、日期的format*/
+  /** 额外数据：例如下拉的配置项 、日期的format */
   options?: any;
+  /** other */
   props?: InputProps | DatePickerProps;
 }
 interface ObjIpo {
   [k: string]: any;
 }
-interface SearchFormProps<T = {}> {
+interface SearchProps<T = {}> {
+  /** 表单数据结构 */
   formData: { [k in keyof T]: FormItemIpo };
-  clickSearch: (v: any) => void;
-  /**额外的按钮 */
+  /** 点击搜索回调 */
+  onSearchClick: (v: any) => void;
+  /** 额外的按钮(例：导出按钮) */
   extraBtn?: () => JSX.Element;
 }
-/**搜索组件
- * formData：搜索的数据
- * clickSearch：点击搜索触发的事件
+
+/**
+ * Search组件
  */
-function SearchForm<T>({
-  formData,
-  clickSearch,
-  extraBtn,
-}: SearchFormProps<T>) {
-  /**obj-arr */
-  const toArr = (obj: any) => {
-    let arr = Object.keys(obj).map((key) => {
-      return obj[key];
+function Search<T>({ formData, onSearchClick, extraBtn }: SearchProps<T>) {
+  /** form数据 */
+  const [data] = useState(() => {
+    let arr = Object.keys(formData).map((key: string) => {
+      return (formData as any)[key];
     });
     return arr;
-  };
-  /**form数据-arr */
-  const [data] = useState(() => {
-    return toArr(formData);
   });
 
-  /**搜索监听 */
+  /** 搜索监听 */
   const search = () => {
     let form: ObjIpo = {};
-    data.map((item) => {
+    data.map(item => {
       form[item.key] = item.value;
     });
-    clickSearch(form);
+    onSearchClick(form);
   };
-  /**表单变化监听 */
+
+  /** 表单变化监听 */
   const onFormItemChange = (value: any, type: string, index: number) => {
     let formValue: any = value;
     if (type == 'input') {
@@ -77,33 +68,35 @@ function SearchForm<T>({
     data[index].value = formValue;
   };
 
-  /**日期区间ui */
+  /** 日期区间ui */
   const renderRangePicker = (item: FormItemIpo, index: number) => {
     return (
       <RangePicker
         style={{ width: item.width }}
         allowClear={true}
         {...item.options}
-        onChange={(data, dateString) => {
+        onChange={(data: any, dateString: string) => {
           onFormItemChange(dateString, item.type, index);
         }}
       />
     );
   };
-  /**日期ui */
+
+  /** 日期ui */
   const renderDatePicker = (item: FormItemIpo, index: number) => {
     return (
       <DatePicker
         style={{ width: item.width }}
         allowClear={true}
         {...item.options}
-        onChange={(data, dateString) => {
+        onChange={(data: any, dateString: string) => {
           onFormItemChange(dateString, item.type, index);
         }}
       />
     );
   };
-  /**下拉 */
+
+  /** 下拉 */
   const renderSelect = (item: FormItemIpo, index: number) => {
     return (
       <Select
@@ -111,26 +104,29 @@ function SearchForm<T>({
         defaultValue={item.value}
         style={{ width: item.width || 140 }}
         placeholder={item.placeholder}
-        onChange={(value) => {
+        onChange={(value: any) => {
           onFormItemChange(value, item.type, index);
         }}
-        filterOption={(input, option) => {
+        filterOption={(input: any, option: any) => {
           return option
             ? option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             : false;
         }}
       >
-        {item.options?.map((option: any) => {
-          return (
-            <Option key={option.value} value={option.value}>
-              {option.label}
-            </Option>
-          );
-        })}
+        {item &&
+          item.options &&
+          item.options.map((option: any) => {
+            return (
+              <Option key={option.value} value={option.value}>
+                {option.label}
+              </Option>
+            );
+          })}
       </Select>
     );
   };
-  /**输入框 */
+
+  /** 输入框 */
   const renderInput = (item: FormItemIpo, index: number) => {
     return (
       <Input
@@ -139,13 +135,14 @@ function SearchForm<T>({
         allowClear={true}
         defaultValue={item.value}
         placeholder={item.placeholder}
-        onChange={(e) => {
+        onChange={(e: any) => {
           onFormItemChange(e, item.type, index);
         }}
       />
     );
   };
-  /**根据表单类型渲染表单ui */
+
+  /** 根据表单类型渲染表单ui */
   const renderFormItem = (item: FormItemIpo, index: number) => {
     let component = null;
     switch (item.type) {
@@ -169,6 +166,7 @@ function SearchForm<T>({
     }
     return component;
   };
+
   return (
     <div className="common-searchDiv flexR">
       <div className="search-ipt-box flexR">
@@ -191,4 +189,4 @@ function SearchForm<T>({
   );
 }
 
-export default SearchForm;
+export default Search;

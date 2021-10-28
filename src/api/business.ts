@@ -1,4 +1,5 @@
-import {httpPost,httpGet,httpPut,httpDelete} from "@/service/http"
+import { httpPost, httpGet, httpPut, httpDelete } from "@/service/http"
+import config from '../../scripts/api/api.config.json'
 type int = number;
 		type List<T> = Array<T>
 		type Collection<T> = Array<T>
@@ -4552,7 +4553,7 @@ export default {
     * 刷新token
     */
     refreshToken(authTokenVO: CooperationCheckTokenVO): Promise<CooperationCheckTokenVO> {
-      return httpPost(`/business/v1.0/pb/auth/action/refreshToken`, authTokenVO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/auth/action/refreshToken`, authTokenVO).then((res:any) => res)
     },
   },
   authorizerGrant: {
@@ -4560,25 +4561,25 @@ export default {
     * 支付宝公众号授权
     */
     aliWeb(params: { authCode: string }): Promise<AuthorizerGrantResult> {
-      return httpPost(`/business/v1.0/pb/authorizer-grant/action/ali-web`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/authorizer-grant/action/ali-web`,  {...params} ).then((res:any) => res)
     },
     /**
     * 钉钉扫码授权
     */
     dingTalk(params: { authCode: string }): Promise<AuthorizerGrantResult> {
-      return httpPost(`/business/v1.0/pb/authorizer-grant/action/dingTalk`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/authorizer-grant/action/dingTalk`,  {...params} ).then((res:any) => res)
     },
     /**
     * 微信小程序授权
     */
     wxMini(params: { authCode: string, encryptedData?: string, iv: string }): Promise<AuthorizerGrantResult> {
-      return httpPost(`/business/v1.0/pb/authorizer-grant/action/wx-mini`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/authorizer-grant/action/wx-mini`,  {...params} ).then((res:any) => res)
     },
     /**
     * 微信公众号授权
     */
     wxWeb(params: { authCode: string }): Promise<AuthorizerGrantResult> {
-      return httpPost(`/business/v1.0/pb/authorizer-grant/action/wx-web`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/authorizer-grant/action/wx-web`,  {...params} ).then((res:any) => res)
     },
   },
   authorizerRedirect: {
@@ -4586,13 +4587,13 @@ export default {
     * 支付宝公众号
     */
     aliWeb(params: { authCode: string, redirectUrl: string }): Promise<boolean> {
-      return httpPost(`/business/v1.0/pb/authorizer-redirect/action/aliWeb`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/authorizer-redirect/action/aliWeb`,  {...params} ).then((res:any) => res)
     },
     /**
     * 微信公众号
     */
     wxWeb(params: { authCode: string, redirectUrl: string }): Promise<boolean> {
-      return httpPost(`/business/v1.0/pb/authorizer-redirect/action/wxWeb`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/authorizer-redirect/action/wxWeb`,  {...params} ).then((res:any) => res)
     },
   },
   bannerInfos: {
@@ -4600,13 +4601,13 @@ export default {
     * app触发banner点击
     */
     click(kidRequest: KidRequest<long>): Promise<boolean> {
-      return httpPost(`/business/v1.0/pb/banner-infos/action/click`, kidRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/banner-infos/action/click`, kidRequest).then((res:any) => res)
     },
     /**
     * app根据位置获取banner信息（位置 1:首页 2:个人中心）
     */
     listByPosition(params: { position: number }): Promise<List<BannerInfoVO>> {
-      return httpGet(`/business/v1.0/pb/banner-infos/action/list-by-position`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/banner-infos/action/list-by-position`,  {...params} ).then((res:any) => res)
     },
   },
   essentialIllnesss: {
@@ -4614,25 +4615,25 @@ export default {
     * 所有疾病
     */
     getAll(params: { keyword?: string }): Promise<List<EssentialIllnessVO>> {
-      return httpGet(`/business/v1.0/pb/essential-illnesss/action/getAll`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/essential-illnesss/action/getAll`,  {...params} ).then((res:any) => res)
     },
     /**
     * 疾病搜索
     */
     search(params: { name?: string, pageNo?: number, pageSize?: number, parentCode?: string, random?: boolean, recommend?: boolean }): Promise<PageList<IllnessEs>> {
-      return httpGet(`/business/v1.0/pb/essential-illnesss/action/search`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/essential-illnesss/action/search`,  {...params} ).then((res:any) => res)
     },
     /**
     * 首页健康/疾病
     */
     homeIllnessList(): Promise<List<EssentialIllness>> {
-      return httpGet(`/business/v1.0/pt/essential-illnesss/action/home-illness-list`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/essential-illnesss/action/home-illness-list`).then((res:any) => res)
     },
     /**
     * 所有疾病（不包含首页疾病）
     */
     listPage(params: { keyword?: string, pageNo?: number, pageSize?: number }): Promise<PageList<EssentialIllness>> {
-      return httpGet(`/business/v1.0/pt/essential-illnesss/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/essential-illnesss/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   foodOrderComments: {
@@ -4640,13 +4641,13 @@ export default {
     * APP端查询菜品评论
     */
     listDishComments(params: { dishId?: string, pageNo?: number, pageSize?: number }): Promise<PageList<FoodOrderCommentListItemVO>> {
-      return httpGet(`/business/v1.0/pb/food-order-comments/action/list-dish-comments`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/food-order-comments/action/list-dish-comments`,  {...params} ).then((res:any) => res)
     },
     /**
     * 发布评论
     */
     create(foodOrderComment: FoodOrderComment): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/food-order-comments/action/create`, foodOrderComment).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-order-comments/action/create`, foodOrderComment).then((res:any) => res)
     },
   },
   healths: {
@@ -4654,7 +4655,7 @@ export default {
     * 健康检查
     */
     check(): Promise<boolean> {
-      return httpGet(`/business/v1.0/pb/healths/action/check`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/healths/action/check`).then((res:any) => res)
     },
   },
   managerUsers: {
@@ -4662,49 +4663,49 @@ export default {
     * 商户登录
     */
     login(loginUser: CooperationManagerLoginVO): Promise<CooperationManagerLoginAuthVO> {
-      return httpPost(`/business/v1.0/pb/manager-users/action/login`, loginUser).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/manager-users/action/login`, loginUser).then((res:any) => res)
     },
     /**
     * 商户后台用户删除
     */
     deleteByIds(kids: number[]): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/manager-users/action/deleteByIds`, kids).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-users/action/deleteByIds`, kids).then((res:any) => res)
     },
     /**
     * 商户web后台查询分页ManagerUser
     */
     listAdminWeb(pageRequest: PageRequest<CooperationManagerUserDTO>): Promise<PageList<CooperationManagerUserVO>> {
-      return httpPost(`/business/v1.0/pt/manager-users/action/list-admin-web`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-users/action/list-admin-web`, pageRequest).then((res:any) => res)
     },
     /**
     * 查询当前的menuTree
     */
     listCurrentMenuTree(): Promise<List<CooperationManagerMenuExcelVO>> {
-      return httpPost(`/business/v1.0/pt/manager-users/action/listCurrentMenuTree`).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-users/action/listCurrentMenuTree`).then((res:any) => res)
     },
     /**
     * 商户后台登出
     */
     loginOut(): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/manager-users/action/login-out`).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-users/action/login-out`).then((res:any) => res)
     },
     /**
     * 重设员工密码
     */
     resetPasswordWeb(params: { userId: string }): Promise<boolean> {
-      return httpGet(`/business/v1.0/pt/manager-users/action/resetPassword-web`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-users/action/resetPassword-web`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户后台查询单个ManagerUser
     */
     get(params: { kid: string }): Promise<CooperationManagerUserVO> {
-      return httpGet(`/business/v1.0/pt/manager-users/${params.kid}`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-users/${params.kid}`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户端用户停用/启用
     */
     put(params: { kid: string }, managerUserVO: CooperationManagerUserVO): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/manager-users/${params.kid}`, managerUserVO,  {...params} ).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-users/${params.kid}`, managerUserVO,  {...params} ).then((res:any) => res)
     },
   },
   picConfigs: {
@@ -4712,7 +4713,7 @@ export default {
     * app跟据编码获取图片
     */
     getPicConfigByCode(params: { picCode: string }): Promise<PicConfig> {
-      return httpGet(`/business/v1.0/pb/pic-configs/action/getPicConfigByCode`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/pic-configs/action/getPicConfigByCode`,  {...params} ).then((res:any) => res)
     },
   },
   setMeals: {
@@ -4720,43 +4721,43 @@ export default {
     * 小程序端推荐套餐详情
     */
     checkOnSale(params: { illnessCode: string, shopId: string }): Promise<boolean> {
-      return httpGet(`/business/v1.0/pb/set-meals/action/checkOnSale`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/set-meals/action/checkOnSale`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序端首页推荐套餐菜品
     */
     randomSetMealDishes(params: { recommendCode: string }): Promise<List<SetMealDishVO>> {
-      return httpGet(`/business/v1.0/pb/set-meals/action/randomSetMealDishes`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/set-meals/action/randomSetMealDishes`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序端推荐套餐详情
     */
     recommendMealDetail(params: { kid: string }): Promise<RecommendSetMealDetailVO> {
-      return httpGet(`/business/v1.0/pb/set-meals/action/recommendMealDetail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/set-meals/action/recommendMealDetail`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序端推荐套餐列表
     */
     recommendMealList(params: { illnessCodes: string, infoId: string, mealTime?: string, storeId?: string }): Promise<Map<string,List<RecommendSetMealItemVO>>> {
-      return httpGet(`/business/v1.0/pb/set-meals/action/recommendMealList`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/set-meals/action/recommendMealList`,  {...params} ).then((res:any) => res)
     },
     /**
     * 获取售卖套餐的最近店铺
     */
     setMealNearestShop(params: { latitude?: number, longitude?: number, setMealKid: string }): Promise<OfflineStoreVO> {
-      return httpGet(`/business/v1.0/pb/set-meals/action/setMealNearestShop`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/set-meals/action/setMealNearestShop`,  {...params} ).then((res:any) => res)
     },
     /**
     * 90kcal模版详情（app端）
     */
     detail90Kcal(params: { defineCode: string }): Promise<KcalTemplateVO> {
-      return httpGet(`/business/v1.0/pt/set-meals/action/detail90Kcal`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/set-meals/action/detail90Kcal`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户后台查询套餐详情
     */
     merchantDetail(params: { setMealId: string }): Promise<SetMealDetailVO> {
-      return httpGet(`/business/v1.0/pt/set-meals/action/merchant-detail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/set-meals/action/merchant-detail`,  {...params} ).then((res:any) => res)
     },
   },
   userAccounts: {
@@ -4764,19 +4765,19 @@ export default {
     * 手机号登录
     */
     registerOrLoginByPhone(registerDTO: RegisterDTO): Promise<LoginVO> {
-      return httpPost(`/business/v1.0/pb/user-accounts/action/registerOrLoginByPhone`, registerDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/user-accounts/action/registerOrLoginByPhone`, registerDTO).then((res:any) => res)
     },
     /**
     * 获取帐户信息
     */
     detail(): Promise<UserAccount> {
-      return httpGet(`/business/v1.0/pt/user-accounts/action/detail`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-accounts/action/detail`).then((res:any) => res)
     },
     /**
     * 修改帐户信息
     */
     edit(userAccount: UserAccount): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/user-accounts/action/edit`, userAccount).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-accounts/action/edit`, userAccount).then((res:any) => res)
     },
   },
   userLogin: {
@@ -4784,25 +4785,25 @@ export default {
     * 三方注册&登录
     */
     registerOrLogin(userLoginDTO: UserLoginDTO): Promise<LoginVO> {
-      return httpPost(`/business/v1.0/pb/user-login/action/registerOrLogin`, userLoginDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/user-login/action/registerOrLogin`, userLoginDTO).then((res:any) => res)
     },
     /**
     * 三方注册&登录
     */
     registerOrLoginSilent(userLoginDTO: UserLoginDTO): Promise<LoginVO> {
-      return httpPost(`/business/v1.0/pb/user-login/action/registerOrLogin-silent`, userLoginDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pb/user-login/action/registerOrLogin-silent`, userLoginDTO).then((res:any) => res)
     },
     /**
     * 三方小程序绑定手机号
     */
     bind(userLoginDTO: UserLoginDTO): Promise<LoginVO> {
-      return httpPost(`/business/v1.0/pt/user-login/action/bind`, userLoginDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-login/action/bind`, userLoginDTO).then((res:any) => res)
     },
     /**
     * 获取群id
     */
     getGid(userLoginDTO: UserLoginDTO): Promise<string> {
-      return httpPost(`/business/v1.0/pt/user-login/action/get-gid`, userLoginDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-login/action/get-gid`, userLoginDTO).then((res:any) => res)
     },
   },
   couponInfos: {
@@ -4810,7 +4811,7 @@ export default {
     * 领券中心
     */
     listCenterPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<CouponInfoVO>> {
-      return httpGet(`/business/v1.0/pt/coupon-infos/action/list-center-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/coupon-infos/action/list-center-page`,  {...params} ).then((res:any) => res)
     },
   },
   deliveryAddresss: {
@@ -4818,37 +4819,37 @@ export default {
     * 新增配送地址
     */
     create(request: DeliveryAddressRequest): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/delivery-addresss/action/create`, request).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/delivery-addresss/action/create`, request).then((res:any) => res)
     },
     /**
     * 获取默认的配送地址
     */
     getDefault(): Promise<DeliveryAddress> {
-      return httpGet(`/business/v1.0/pt/delivery-addresss/action/get-default`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/delivery-addresss/action/get-default`).then((res:any) => res)
     },
     /**
     * 分页查询配送地址列表
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<DeliveryAddress>> {
-      return httpGet(`/business/v1.0/pt/delivery-addresss/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/delivery-addresss/action/list-page`,  {...params} ).then((res:any) => res)
     },
     /**
     * 删除配送地址
     */
     remove(kidRequest: KidRequest<long>): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/delivery-addresss/action/remove`, kidRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/delivery-addresss/action/remove`, kidRequest).then((res:any) => res)
     },
     /**
     * 设置默认配送地址
     */
     setDefault(kidRequest: KidRequest<long>): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/delivery-addresss/action/set-default`, kidRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/delivery-addresss/action/set-default`, kidRequest).then((res:any) => res)
     },
     /**
     * 修改配送地址
     */
     update(request: DeliveryAddressRequest): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/delivery-addresss/action/update`, request).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/delivery-addresss/action/update`, request).then((res:any) => res)
     },
   },
   dishess: {
@@ -4856,96 +4857,96 @@ export default {
     * 小程序首页更换菜品接口
     */
     changeDishes(dto: ChangeDishesDTO): Promise<RecommendedDishesVO> {
-      return httpPost(`/business/v1.0/pt/dishess/action/changeDishes`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/changeDishes`, dto).then((res:any) => res)
     },
     /**
     * 小程序门店菜品详情
     */
     detailClient(params: { dishesId: string, unit?: number }): Promise<DishesDetailVO> {
-      return httpGet(`/business/v1.0/pt/dishess/action/detailClient`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/detailClient`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序首页菜品轮播接口
     */
     dishesShowListPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<DishesShowVO>> {
-      return httpGet(`/business/v1.0/pt/dishess/action/dishesShowListPage`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/dishesShowListPage`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序首页老虎机展示店铺所有菜品
     */
     getStoreAllDishes(dto: SlotRecommendedDishesDTO): Promise<List<Dishes>> {
-      return httpPost(`/business/v1.0/pt/dishess/action/getStoreAllDishes`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/getStoreAllDishes`, dto).then((res:any) => res)
     },
     /**
     * 小程序门店所有菜品信息对象接口
     */
     getStoreDishesVO(params: { infoId?: string, storeId?: string }): Promise<OptionalStoreDishesVO> {
-      return httpGet(`/business/v1.0/pt/dishess/action/getStoreDishesVO`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/getStoreDishesVO`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户运营管理后台查询菜品详情
     */
     merchantDishesdetail(params: { dishesId: string }): Promise<Dishes> {
-      return httpGet(`/business/v1.0/pt/dishess/action/merchantDishesdetail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/merchantDishesdetail`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序多角色自选套餐计算接口
     */
     multiRoleOptionalDishes(dtos: OptionalDishesDTO[]): Promise<Map<long,OptionalDishesVO>> {
-      return httpPost(`/business/v1.0/pt/dishess/action/multiRoleOptionalDishes`, dtos).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/multiRoleOptionalDishes`, dtos).then((res:any) => res)
     },
     /**
     * 小程序自选套餐计算接口
     */
     optionalDishes(dto: OptionalDishesDTO): Promise<OptionalDishesVO> {
-      return httpPost(`/business/v1.0/pt/dishess/action/optionalDishes`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/optionalDishes`, dto).then((res:any) => res)
     },
     /**
     * 小程序端自选菜品列表
     */
     optionalDishesList(params: { infoId?: string, storeId: string }): Promise<Map<string,List<StoreDishesOptionalVO>>> {
-      return httpGet(`/business/v1.0/pt/dishess/action/optionalDishesList`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/optionalDishesList`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序端自选菜品列表包装分类查询
     */
     optionalDishesListByQueryType(params: { infoId?: string, pageNo?: number, pageSize?: number, queryType?: string, storeId?: string }): Promise<PageList<StoreDishesNewOptionalVO>> {
-      return httpGet(`/business/v1.0/pt/dishess/action/optionalDishesListByQueryType`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/optionalDishesListByQueryType`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序首页菜品数据随机排序
     */
     randomSortDishes(): Promise<boolean> {
-      return httpGet(`/business/v1.0/pt/dishess/action/randomSortDishes`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/randomSortDishes`).then((res:any) => res)
     },
     /**
     * 小程序首页菜品推荐接口
     */
     recommendedDishes(dto: RecommendedDishesDTO): Promise<RecommendedDishesVO> {
-      return httpPost(`/business/v1.0/pt/dishess/action/recommendedDishes`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/recommendedDishes`, dto).then((res:any) => res)
     },
     /**
     * 小程序首页菜品替换菜品集合接口
     */
     replaceDishesList(dto: ReplaceDishesDTO): Promise<List<StoreDishesVO>> {
-      return httpPost(`/business/v1.0/pt/dishess/action/replaceDishesList`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/replaceDishesList`, dto).then((res:any) => res)
     },
     /**
     * 小程序首页老虎机抽取菜品
     */
     slotRecommendedDishes(dto: SlotRecommendedDishesDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/dishess/action/slotRecommendedDishes`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/slotRecommendedDishes`, dto).then((res:any) => res)
     },
     /**
     * 小程序首页老虎机展示菜品接口
     */
     slotShowDishes(dto: SlotRecommendedDishesDTO): Promise<SlotShowDishesVO> {
-      return httpPost(`/business/v1.0/pt/dishess/action/slotShowDishes`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/dishess/action/slotShowDishes`, dto).then((res:any) => res)
     },
   },
   essentialQuestionnaires: {
     findByIllness(params: { referCode: string }): Promise<List<EssentialQuestionnaire>> {
-      return httpGet(`/business/v1.0/pt/essential-questionnaires/action/find-by-illness`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/essential-questionnaires/action/find-by-illness`,  {...params} ).then((res:any) => res)
     },
   },
   excelExports: {
@@ -4953,7 +4954,7 @@ export default {
     * 合作方导出数据
     */
     export(excelExportRecord: ExcelExportRecord): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/excel-exports/action/export`, excelExportRecord).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/excel-exports/action/export`, excelExportRecord).then((res:any) => res)
     },
   },
   feedbackInfos: {
@@ -4961,7 +4962,7 @@ export default {
     * app端新增返馈信息
     */
     createApp(feedbackInfo: FeedbackInfo): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/feedback-infos/action/createApp`, feedbackInfo).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/feedback-infos/action/createApp`, feedbackInfo).then((res:any) => res)
     },
   },
   foodOrderInfos: {
@@ -4969,7 +4970,7 @@ export default {
     * APP端查询订单角色信息列表
     */
     list(params: { orderId?: string }): Promise<List<FoodOrderInfosVO>> {
-      return httpGet(`/business/v1.0/pt/food-order-infos/action/list`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-order-infos/action/list`,  {...params} ).then((res:any) => res)
     },
   },
   foodOrderSetMeals: {
@@ -4977,7 +4978,7 @@ export default {
     * APP端查询订单所有套餐信息
     */
     list(params: { orderId?: string }): Promise<List<FoodOrderSetMealVO>> {
-      return httpGet(`/business/v1.0/pt/food-order-set-meals/action/list`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-order-set-meals/action/list`,  {...params} ).then((res:any) => res)
     },
   },
   foodOrders: {
@@ -4985,97 +4986,97 @@ export default {
     * app取消订单
     */
     appCancel(params: { orderKid?: string }): Promise<boolean> {
-      return httpGet(`/business/v1.0/pt/food-orders/action/app-cancel`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/app-cancel`,  {...params} ).then((res:any) => res)
     },
     /**
     * app查询订单详情
     */
     appDetail(params: { orderKid: string }): Promise<FoodOrderDetailAppVO> {
-      return httpGet(`/business/v1.0/pt/food-orders/action/app-detail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/app-detail`,  {...params} ).then((res:any) => res)
     },
     /**
     * app查询订单列表 expressType:0.自提 1.外卖
     */
     appList(params: { expressType: number, pageNo?: number, pageSize?: number }): Promise<PageList<FoodOrderAppListVO>> {
-      return httpGet(`/business/v1.0/pt/food-orders/action/app-list`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/app-list`,  {...params} ).then((res:any) => res)
     },
     /**
     * app创建订单 并返回支付参数
     */
     create(orderCreateDTO: FoodOrderCreateDTO): Promise<CommonOrderCreatedVO> {
-      return httpPut(`/business/v1.0/pt/food-orders/action/create`, orderCreateDTO).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/create`, orderCreateDTO).then((res:any) => res)
     },
     /**
     * app获取指定订单支付参数
     */
     getPayParams(kidRequest: KidRequest<long>): Promise<CommonOrderCreatedVO> {
-      return httpPut(`/business/v1.0/pt/food-orders/action/getPayParams`, kidRequest).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/getPayParams`, kidRequest).then((res:any) => res)
     },
     /**
     * App查询支付状态 1.待支付 2.已支付 3.已退款
     */
     getStatus(params: { payNo: string }): Promise<number> {
-      return httpGet(`/business/v1.0/pt/food-orders/action/getStatus`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/getStatus`,  {...params} ).then((res:any) => res)
     },
     /**
     * app创建订单预先检查
     */
     prepareCreateCheck(dto: FoodOrderPrepareCreateDTO): Promise<OrderPrepareCreateVO> {
-      return httpPut(`/business/v1.0/pt/food-orders/action/prepareCreateCheck`, dto).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/prepareCreateCheck`, dto).then((res:any) => res)
     },
     /**
     * 获取骑手位置
     */
     riderLocation(params: { orderKid: string }): Promise<RiderLocationVO> {
-      return httpGet(`/business/v1.0/pt/food-orders/action/rider-location`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/rider-location`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商家后台查询分页数据
     */
     storeListPage(pageRequest: PageRequest<FoodOrder>): Promise<PageList<FoodOrderStoreListVO>> {
-      return httpPost(`/business/v1.0/pt/food-orders/action/store-list-page`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/store-list-page`, pageRequest).then((res:any) => res)
     },
     /**
     * 商家后台发货
     */
     storeDeliver(dto: ManagerOperaDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/food-orders/action/storeDeliver`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/storeDeliver`, dto).then((res:any) => res)
     },
     /**
     * 商家后台送达
     */
     storeDelivered(dto: ManagerOperaDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/food-orders/action/storeDelivered`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/storeDelivered`, dto).then((res:any) => res)
     },
     /**
     * 商家后台查询单个详情
     */
     storeDetail(params: { kid: string }): Promise<FoodOrderDetailManagerVO> {
-      return httpGet(`/business/v1.0/pt/food-orders/action/storeDetail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/storeDetail`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户后台取消美团发货
     */
     storeMeituanCancelDeliver(dto: ManagerOperaDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/food-orders/action/storeMeituanCancelDeliver`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/storeMeituanCancelDeliver`, dto).then((res:any) => res)
     },
     /**
     * 商家后台美团发货
     */
     storeMeituanDeliver(dto: ManagerOperaDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/food-orders/action/storeMeituanDeliver`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/storeMeituanDeliver`, dto).then((res:any) => res)
     },
     /**
     * 商家后台核销
     */
     storeVerify(req: KidRequest<string>): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/food-orders/action/storeVerify`, req).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/storeVerify`, req).then((res:any) => res)
     },
     /**
     * 商家后台工单查询分页数据
     */
     ticketsListPage(pageRequest: PageRequest<FoodOrder>): Promise<PageList<FoodOrderStoreListVO>> {
-      return httpPost(`/business/v1.0/pt/food-orders/action/tickets-list-page`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/food-orders/action/tickets-list-page`, pageRequest).then((res:any) => res)
     },
   },
   managerRolesWeb: {
@@ -5083,7 +5084,7 @@ export default {
     * 商户web后台新增ManagerRole
     */
     post(managerRoleVO: CooperationManagerRoleVO): Promise<number> {
-      return httpPost(`/business/v1.0/pt/manager-roles-web`, managerRoleVO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-roles-web`, managerRoleVO).then((res:any) => res)
     },
   },
   managerRoles: {
@@ -5091,25 +5092,25 @@ export default {
     * 商户后台角色删除
     */
     deleteByIds(kids: number[]): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/manager-roles/action/deleteByIds`, kids).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-roles/action/deleteByIds`, kids).then((res:any) => res)
     },
     /**
     * 商户后台查询ManagerRole
     */
     listAdmin(pageRequest: PageRequest<CooperationManagerRole>): Promise<PageList<CooperationManagerRole>> {
-      return httpPost(`/business/v1.0/pt/manager-roles/action/list-admin`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-roles/action/list-admin`, pageRequest).then((res:any) => res)
     },
     /**
     * 商户web后台查询角色权限码
     */
     listPermissionWeb(params: { kid: string }): Promise<List<CooperationManagerRolePermission>> {
-      return httpGet(`/business/v1.0/pt/manager-roles/action/list-permission-web`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-roles/action/list-permission-web`,  {...params} ).then((res:any) => res)
     },
     /**
     * 管理后台变更角色权限
     */
     updatePermission(rolePermissionDTO: RolePermissionDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/manager-roles/action/update-permission`, rolePermissionDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-roles/action/update-permission`, rolePermissionDTO).then((res:any) => res)
     },
   },
   managerUsersWeb: {
@@ -5117,7 +5118,7 @@ export default {
     * 商户web后台新增ManagerUser
     */
     post(managerUserVO: CooperationManagerUserVO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/manager-users-web`, managerUserVO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/manager-users-web`, managerUserVO).then((res:any) => res)
     },
   },
   materialClassifys: {
@@ -5125,7 +5126,7 @@ export default {
     * APP端查询分页数据
     */
     listForApp(): Promise<List<MaterialClassifyVO>> {
-      return httpGet(`/business/v1.0/pt/material-classifys/action/listForApp`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/material-classifys/action/listForApp`).then((res:any) => res)
     },
   },
   memberInvites: {
@@ -5133,7 +5134,7 @@ export default {
     * 获取我的邀请记录
     */
     invitePage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<UserInviteVO>> {
-      return httpGet(`/business/v1.0/pt/member-invites/action/invite-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/member-invites/action/invite-page`,  {...params} ).then((res:any) => res)
     },
   },
   news: {
@@ -5141,19 +5142,19 @@ export default {
     * APP端查询资讯详情信息
     */
     detail(params: { kid: string }): Promise<NewDetailVO> {
-      return httpGet(`/business/v1.0/pt/news/action/detail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/news/action/detail`,  {...params} ).then((res:any) => res)
     },
     /**
     * 用户点赞资讯对象
     */
     like(request: NewsLikeRequest): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/news/action/like`, request).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/news/action/like`, request).then((res:any) => res)
     },
     /**
     * APP端查询分页数据
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<NewsVO>> {
-      return httpGet(`/business/v1.0/pt/news/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/news/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   orderRangeConfigs: {
@@ -5161,7 +5162,7 @@ export default {
     * 小程序端获取自取/配送时段配置库存接口
     */
     getOrderRangeConfigVO(params: { mealsType?: string, orderConfigDate?: string, storeId?: string }): Promise<List<OrderRangeConfigVO>> {
-      return httpGet(`/business/v1.0/pt/order-range-configs/action/getOrderRangeConfigVO`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/order-range-configs/action/getOrderRangeConfigVO`,  {...params} ).then((res:any) => res)
     },
   },
   orderRulesConfigs: {
@@ -5169,13 +5170,13 @@ export default {
     * 商户运营后台查询配置详情
     */
     getMerchantConfig(): Promise<OrderRulesConfig> {
-      return httpGet(`/business/v1.0/pt/order-rules-configs/action/getMerchantConfig`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/order-rules-configs/action/getMerchantConfig`).then((res:any) => res)
     },
     /**
     * 商户运营后台新增/编辑
     */
     merchantCreateOrUpdate(orderRulesConfig: OrderRulesConfig): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/order-rules-configs/action/merchantCreateOrUpdate`, orderRulesConfig).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/order-rules-configs/action/merchantCreateOrUpdate`, orderRulesConfig).then((res:any) => res)
     },
   },
   originalMaterials: {
@@ -5183,13 +5184,13 @@ export default {
     * app端获取食材详情
     */
     detailApp(params: { kid: string }): Promise<OriginalMaterialVO> {
-      return httpGet(`/business/v1.0/pt/original-materials/action/detail-app`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/original-materials/action/detail-app`,  {...params} ).then((res:any) => res)
     },
     /**
     * APP端查询分页数据
     */
     listPage(params: { classifyId: string, pageNo?: number, pageSize?: number }): Promise<PageList<OriginalMaterialVO>> {
-      return httpGet(`/business/v1.0/pt/original-materials/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/original-materials/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   postSales: {
@@ -5197,55 +5198,55 @@ export default {
     * 查询订单是否能进行售后（APP端） 1:可以发起售后，0：不能发起售后
     */
     canPostSale(params: { kid: string }): Promise<number> {
-      return httpGet(`/business/v1.0/pt/post-sales/action/can-post-sale`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/can-post-sale`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户后台查询详情
     */
     detailCooperation(params: { kid: string }): Promise<PostSaleDetailVO> {
-      return httpGet(`/business/v1.0/pt/post-sales/action/detail-cooperation`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/detail-cooperation`,  {...params} ).then((res:any) => res)
     },
     /**
     * 用户取消售后
     */
     doCancel(request: KidRequest<long>): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/post-sales/action/do-cancel`, request).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/do-cancel`, request).then((res:any) => res)
     },
     /**
     * 用户发起售后
     */
     doStart(request: StartPostSaleRequest): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/post-sales/action/do-start`, request).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/do-start`, request).then((res:any) => res)
     },
     /**
     * 查询售后详情（APP端）
     */
     info(params: { kid: string }): Promise<PostSaleDetailVO> {
-      return httpGet(`/business/v1.0/pt/post-sales/action/info`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/info`,  {...params} ).then((res:any) => res)
     },
     /**
     * 分页查询售后列表（APP端）
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<PostSaleVO>> {
-      return httpGet(`/business/v1.0/pt/post-sales/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/list-page`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户后台查询分页数据
     */
     listPageCooperation(pageRequest: PageRequest<PostSaleAdminQueryRequest>): Promise<PageList<PostSaleDetailCooperationVO>> {
-      return httpPost(`/business/v1.0/pt/post-sales/action/list-page-cooperation`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/list-page-cooperation`, pageRequest).then((res:any) => res)
     },
     /**
     * 商户后台处理用户的售后申请
     */
     processCooperation(request: ProcessPostSaleRequest): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/post-sales/action/process-cooperation`, request).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/process-cooperation`, request).then((res:any) => res)
     },
     /**
     * 计算售后应该退款的金额
     */
     refundAmount(request: StartPostSaleRequest): Promise<OrderRefundInfoVO> {
-      return httpPost(`/business/v1.0/pt/post-sales/action/refund-amount`, request).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/post-sales/action/refund-amount`, request).then((res:any) => res)
     },
   },
   preparationMenus: {
@@ -5253,7 +5254,7 @@ export default {
     * 商户运营管理后台查询分页数据
     */
     merchantListPage(pageRequest: PageRequest<PreparationMenu>): Promise<PageList<PreparationMenu>> {
-      return httpPost(`/business/v1.0/pt/preparation-menus/action/merchant-list-page`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/preparation-menus/action/merchant-list-page`, pageRequest).then((res:any) => res)
     },
   },
   stallLinkedDishess: {
@@ -5261,25 +5262,25 @@ export default {
     * 档口关联菜品
     */
     addDishes(stallAddDishesDTO: StallAddDishesDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/stall-linked-dishess/action/addDishes`, stallAddDishesDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stall-linked-dishess/action/addDishes`, stallAddDishesDTO).then((res:any) => res)
     },
     /**
     * 档口取消关联菜品
     */
     delDishes(stallAddDishesDTO: StallAddDishesDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/stall-linked-dishess/action/delDishes`, stallAddDishesDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stall-linked-dishess/action/delDishes`, stallAddDishesDTO).then((res:any) => res)
     },
     /**
     * 查询商户所有菜品除档品关联菜品
     */
     listAlldishesPage(pageRequest: PageRequest<StallLinkedDishes>): Promise<PageList<StallLinkedDishesVO>> {
-      return httpPost(`/business/v1.0/pt/stall-linked-dishess/action/list-alldishes-page`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stall-linked-dishess/action/list-alldishes-page`, pageRequest).then((res:any) => res)
     },
     /**
     * 商户后台查询档口菜品
     */
     listPageMerchant(pageRequest: PageRequest<StallLinkedDishes>): Promise<PageList<StallLinkedDishesVO>> {
-      return httpPost(`/business/v1.0/pt/stall-linked-dishess/action/list-page-merchant`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stall-linked-dishess/action/list-page-merchant`, pageRequest).then((res:any) => res)
     },
   },
   stalls: {
@@ -5287,31 +5288,31 @@ export default {
     * 商户后台新增档口
     */
     create(stall: Stall): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/stalls/action/create`, stall).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stalls/action/create`, stall).then((res:any) => res)
     },
     /**
     * 管理后台查询单个详情
     */
     detail(params: { kid: string }): Promise<Stall> {
-      return httpGet(`/business/v1.0/pt/stalls/action/detail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stalls/action/detail`,  {...params} ).then((res:any) => res)
     },
     /**
     * 管理后台查询分页数据
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<StallVO>> {
-      return httpGet(`/business/v1.0/pt/stalls/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stalls/action/list-page`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户后台查询备菜单
     */
     prepareMenuListPage(pageRequest: PageRequest<StallPrepareMenuQueryDTO>): Promise<PageList<StallPrepareMenuVO>> {
-      return httpPost(`/business/v1.0/pt/stalls/action/prepare-menu-list-page`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stalls/action/prepare-menu-list-page`, pageRequest).then((res:any) => res)
     },
     /**
     * 管理后台编辑
     */
     update(stall: Stall): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/stalls/action/update`, stall).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stalls/action/update`, stall).then((res:any) => res)
     },
   },
   statisticsBehavior: {
@@ -5319,19 +5320,19 @@ export default {
     * 添加
     */
     add(body: UserBehaviorArg): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/statistics-behavior/action/add`, body).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics-behavior/action/add`, body).then((res:any) => res)
     },
     /**
     * 取消
     */
     cancel(body: UserBehaviorArg): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/statistics-behavior/action/cancel`, body).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics-behavior/action/cancel`, body).then((res:any) => res)
     },
     /**
     * 查询
     */
     get(body: UserBehaviorQuery): Promise<List<UserBehaviorResult>> {
-      return httpPost(`/business/v1.0/pt/statistics-behavior/action/get`, body).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics-behavior/action/get`, body).then((res:any) => res)
     },
   },
   statisticsCounting: {
@@ -5339,19 +5340,19 @@ export default {
     * 批量
     */
     batch(body: StatisticArg[]): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/statistics-counting/action/batch`, body).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics-counting/action/batch`, body).then((res:any) => res)
     },
     /**
     * 查询
     */
     get(body: StatisticQuery): Promise<List<StatisticResult>> {
-      return httpPost(`/business/v1.0/pt/statistics-counting/action/get`, body).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics-counting/action/get`, body).then((res:any) => res)
     },
     /**
     * 提交
     */
     submit(body: StatisticArg): Promise<number> {
-      return httpPost(`/business/v1.0/pt/statistics-counting/action/submit`, body).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics-counting/action/submit`, body).then((res:any) => res)
     },
   },
   statistics: {
@@ -5359,31 +5360,31 @@ export default {
     * 店铺店铺近30天销售额
     */
     shopOrderAmountMonth(): Promise<LinkedHashMap<string,long>> {
-      return httpGet(`/business/v1.0/pt/statistics/action/shop-orderAmountMonth`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics/action/shop-orderAmountMonth`).then((res:any) => res)
     },
     /**
     * 店铺订单，销售额统计
     */
     shopOrderAndAmount(): Promise<StatisticsOrderVO> {
-      return httpGet(`/business/v1.0/pt/statistics/action/shop-orderAndAmount`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics/action/shop-orderAndAmount`).then((res:any) => res)
     },
     /**
     * 店铺退款额，退款数,优惠，优惠金额统计
     */
     shopRefundAndCoupon(): Promise<StatisticsRefundAndCouponVO> {
-      return httpGet(`/business/v1.0/pt/statistics/action/shop-refundAndCoupon`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics/action/shop-refundAndCoupon`).then((res:any) => res)
     },
     /**
     * 店铺商品销量排名
     */
     shopDishesTop(): Promise<List<DishesTopVO>> {
-      return httpGet(`/business/v1.0/pt/statistics/action/shopDishesTop`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics/action/shopDishesTop`).then((res:any) => res)
     },
     /**
     * 店铺套餐销量排名
     */
     shopSetMealTopVO(): Promise<List<SetMealTopVO>> {
-      return httpGet(`/business/v1.0/pt/statistics/action/shopSetMealTopVO`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/statistics/action/shopSetMealTopVO`).then((res:any) => res)
     },
   },
   storeOrderConfigs: {
@@ -5391,25 +5392,25 @@ export default {
     * 商户运营管理后台获取默认天数的订单配置数据
     */
     getMerchantStoreOrderConfig(params: { queryDays?: number }): Promise<List<StoreOrderConfig>> {
-      return httpGet(`/business/v1.0/pt/store-order-configs/action/getMerchantStoreOrderConfig`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/store-order-configs/action/getMerchantStoreOrderConfig`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序端订餐配置信息展示接口
     */
     getStoreOrderConfigAppVO(params: { storeId: string }): Promise<StoreOrderConfigAppVO> {
-      return httpGet(`/business/v1.0/pt/store-order-configs/action/getStoreOrderConfigAppVO`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/store-order-configs/action/getStoreOrderConfigAppVO`,  {...params} ).then((res:any) => res)
     },
     /**
     * 商户运营管理后台批量新增下单份数
     */
     merchantBacthSaveOrupdateConfig(listObj: StoreOrderConfigSaveDTO[]): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/store-order-configs/action/merchantBacthSaveOrupdateConfig`, listObj).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/store-order-configs/action/merchantBacthSaveOrupdateConfig`, listObj).then((res:any) => res)
     },
     /**
     * 小程序端订餐配置信息集合接口
     */
     storeOrderConfigAppVOList(params: { showDays?: number, storeId: string }): Promise<List<StoreOrderConfigAppVO>> {
-      return httpGet(`/business/v1.0/pt/store-order-configs/action/storeOrderConfigAppVOList`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/store-order-configs/action/storeOrderConfigAppVOList`,  {...params} ).then((res:any) => res)
     },
   },
   stores: {
@@ -5417,97 +5418,97 @@ export default {
     * 小程序更换门店校验
     */
     checkSwitchStore(dto: SwitchStoreDTO): Promise<SwitchStoreVO> {
-      return httpPost(`/business/v1.0/pt/stores/action/checkSwitchStore`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/checkSwitchStore`, dto).then((res:any) => res)
     },
     /**
     * 店铺配送范围 判断接口
     */
     deliveryAreaCheck(dto: StoreSearchDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/stores/action/deliveryAreaCheck`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/deliveryAreaCheck`, dto).then((res:any) => res)
     },
     /**
     * 商户运营后台查看店铺详情
     */
     getMerchantStoreDetail(): Promise<StoreAdminVO> {
-      return httpGet(`/business/v1.0/pt/stores/action/getMerchantStoreDetail`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/getMerchantStoreDetail`).then((res:any) => res)
     },
     /**
     * 商户运营后台店铺信息vo
     */
     getMerchantStoreVO(): Promise<StoreManagerVO> {
-      return httpGet(`/business/v1.0/pt/stores/action/getMerchantStoreVO`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/getMerchantStoreVO`).then((res:any) => res)
     },
     /**
     * 商户后台批量关联套餐
     */
     merchantBatchLinkedSetmeal(batchRequest: BatchRequest<StoreRecommendSetMealDTO>): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/stores/action/merchant-batch-linked-setmeal`, batchRequest).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchant-batch-linked-setmeal`, batchRequest).then((res:any) => res)
     },
     /**
     * 商户运营后台批量关联菜品
     */
     merchantBatchSaveDishes(batchRequest: BatchRequest<StoreLinkedDishes>): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/stores/action/merchant-batch-save-dishes`, batchRequest).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchant-batch-save-dishes`, batchRequest).then((res:any) => res)
     },
     /**
     * 商户运营后台店铺取消关联菜品
     */
     merchantCancelLinkedDishes(batchRequest: BatchRequest<StoreDishesManagerVO>): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/stores/action/merchant-cancel-linked-dishes`, batchRequest).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchant-cancel-linked-dishes`, batchRequest).then((res:any) => res)
     },
     /**
     * 商户后台店铺取消关联套餐
     */
     merchantCancelLinkedSetmeal(batchRequest: BatchRequest<StoreRecommendSetMealDTO>): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/stores/action/merchant-cancel-linked-setmeal`, batchRequest).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchant-cancel-linked-setmeal`, batchRequest).then((res:any) => res)
     },
     /**
     * 商户运营后台选择关联菜品查询分页接口
     */
     merchantListPageSelect(pageRequest: PageRequest<QueryDishesDTO>): Promise<PageList<DishesManagerVO>> {
-      return httpPost(`/business/v1.0/pt/stores/action/merchant-list-page-select`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchant-list-page-select`, pageRequest).then((res:any) => res)
     },
     /**
     * 商户管理后台查询可添加推荐套餐分页数据
     */
     merchantSelectRecommendSetMealListPage(pageRequest: PageRequest<StoreRecommendSetMealDTO>): Promise<PageList<SetMealSelectVO>> {
-      return httpPost(`/business/v1.0/pt/stores/action/merchant-select-recommend-SetMeal-list-page`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchant-select-recommend-SetMeal-list-page`, pageRequest).then((res:any) => res)
     },
     /**
     * 商户运营后台店铺关联菜品分页接口
     */
     merchantStoreDishesListPage(pageRequest: PageRequest<StoreDishesDTO>): Promise<PageList<StoreDishesManagerVO>> {
-      return httpPost(`/business/v1.0/pt/stores/action/merchant-store-dishes-list-page`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchant-store-dishes-list-page`, pageRequest).then((res:any) => res)
     },
     /**
     * 商户运营后台查询店铺推荐套餐分页数据
     */
     merchantStoreRecommendSetMealListPage(pageRequest: PageRequest<StoreRecommendSetMealDTO>): Promise<PageList<StoreRecommendSetMealVO>> {
-      return httpPost(`/business/v1.0/pt/stores/action/merchant-store-recommend-SetMeal-list-page`, pageRequest).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchant-store-recommend-SetMeal-list-page`, pageRequest).then((res:any) => res)
     },
     /**
     * 商户运营后台编辑
     */
     merchantUpdateStore(store: StoreDTO): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/stores/action/merchantUpdateStore`, store).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/merchantUpdateStore`, store).then((res:any) => res)
     },
     /**
     * 小程序端推荐最近门店接口
     */
     nearestStore(dto: NearestStoreSearchDTO): Promise<OfflineStoreVO> {
-      return httpPost(`/business/v1.0/pt/stores/action/nearestStore`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/nearestStore`, dto).then((res:any) => res)
     },
     /**
     * 商户后台选择所属类型接口
     */
     searchTarget(params: { name?: string, pageNo?: number, pageSize?: number, recommend?: number }): Promise<List<TargetSearchAdminVO>> {
-      return httpGet(`/business/v1.0/pt/stores/action/searchTarget`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/searchTarget`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序端线下门店分页接口
     */
     storeVOSearch(dto: StoreVOSearchDTO): Promise<PageList<OfflineStoreVO>> {
-      return httpPost(`/business/v1.0/pt/stores/action/storeVOSearch`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/stores/action/storeVOSearch`, dto).then((res:any) => res)
     },
   },
   userCoupons: {
@@ -5515,19 +5516,19 @@ export default {
     * 用户领取优惠券
     */
     createCoupon(userCouponAddDTO: UserCouponAddDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/user-coupons/action/createCoupon`, userCouponAddDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-coupons/action/createCoupon`, userCouponAddDTO).then((res:any) => res)
     },
     /**
     * 用户下单可使用优惠券
     */
     useCheckList(couponUseCheckDTO: CouponUseCheckDTO): Promise<CouponUseCheckVO> {
-      return httpPost(`/business/v1.0/pt/user-coupons/action/useCheckList`, couponUseCheckDTO).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-coupons/action/useCheckList`, couponUseCheckDTO).then((res:any) => res)
     },
     /**
     * 用户领取优惠券
     */
     userListPage(params: { pageNo?: number, pageSize?: number, queryType?: string }): Promise<PageList<UserCouponVO>> {
-      return httpGet(`/business/v1.0/pt/user-coupons/action/user-list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-coupons/action/user-list-page`,  {...params} ).then((res:any) => res)
     },
   },
   userDailyNutrientRecords: {
@@ -5535,19 +5536,19 @@ export default {
     * app查询营养详细报告(营养计划-摄入营养)
     */
     detail(params: { date: string, infoId?: string }): Promise<UserDailyNutrientReport> {
-      return httpGet(`/business/v1.0/pt/user-daily-nutrient-records/action/detail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-daily-nutrient-records/action/detail`,  {...params} ).then((res:any) => res)
     },
     /**
     * app查询三大营养和能量（首页顶部）
     */
     detailMainNutrient(params: { infoId?: string }): Promise<UserDailyNutrientVO> {
-      return httpGet(`/business/v1.0/pt/user-daily-nutrient-records/action/detailMainNutrient`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-daily-nutrient-records/action/detailMainNutrient`,  {...params} ).then((res:any) => res)
     },
     /**
     * app查询餐次的营养标准
     */
     mealStandard(params: { infoId?: string, mealTime?: string }): Promise<SelfChooseMealNutrientStandard> {
-      return httpGet(`/business/v1.0/pt/user-daily-nutrient-records/action/mealStandard`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-daily-nutrient-records/action/mealStandard`,  {...params} ).then((res:any) => res)
     },
   },
   userDataDailyRecords: {
@@ -5555,13 +5556,13 @@ export default {
     * app查询
     */
     detail(dto: UserDailyDataDTO): Promise<UserDailyDataVO> {
-      return httpPost(`/business/v1.0/pt/user-data-daily-records/action/detail`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-data-daily-records/action/detail`, dto).then((res:any) => res)
     },
     /**
     * app提交数据记录
     */
     recordData(record: UserDataDailyRecord): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/user-data-daily-records/action/recordData`, record).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-data-daily-records/action/recordData`, record).then((res:any) => res)
     },
   },
   userInfos: {
@@ -5569,31 +5570,31 @@ export default {
     * 删除角色信息
     */
     delete(kidRequest: KidRequest<long>): Promise<boolean> {
-      return httpDelete(`/business/v1.0/pt/user-infos/action/delete`, kidRequest).then((res:any) => res)
+      return httpDelete(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-infos/action/delete`, kidRequest).then((res:any) => res)
     },
     /**
     * 更改用户选择推荐
     */
     editRecommendCode(info: UserInfo): Promise<boolean> {
-      return httpPut(`/business/v1.0/pt/user-infos/action/edit-recommend-code`, info).then((res:any) => res)
+      return httpPut(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-infos/action/edit-recommend-code`, info).then((res:any) => res)
     },
     /**
     * 保存角色信息
     */
     saveUserInfo(dto: UserEditDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/user-infos/action/save-user-info`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-infos/action/save-user-info`, dto).then((res:any) => res)
     },
     /**
     * 获取我的角色信息
     */
     userInfoDetail(): Promise<LoginVO> {
-      return httpGet(`/business/v1.0/pt/user-infos/action/user-info-detail`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-infos/action/user-info-detail`).then((res:any) => res)
     },
     /**
     * 获取该用户所有角色信息
     */
     userInfoList(): Promise<List<UserInfoVO>> {
-      return httpGet(`/business/v1.0/pt/user-infos/action/user-info-list`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-infos/action/user-info-list`).then((res:any) => res)
     },
   },
   userOrderNutrients: {
@@ -5601,13 +5602,13 @@ export default {
     * 查看订单营养报告
     */
     detail(params: { kid: string }): Promise<UserOrderNutrientReport> {
-      return httpGet(`/business/v1.0/pt/user-order-nutrients/action/detail`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-order-nutrients/action/detail`,  {...params} ).then((res:any) => res)
     },
     /**
     * 订单支付前查看营养报告
     */
     detailBeforePay(dto: FoodOrderSingleInfoDTO): Promise<UserOrderNutrientReport> {
-      return httpPost(`/business/v1.0/pt/user-order-nutrients/action/detailBeforePay`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-order-nutrients/action/detailBeforePay`, dto).then((res:any) => res)
     },
   },
   userTastes: {
@@ -5615,37 +5616,37 @@ export default {
     * 获取用户所有角色口味/过敏原
     */
     getAllTaste(): Promise<List<UserTasteVO>> {
-      return httpGet(`/business/v1.0/pt/user-tastes/action/get-all-taste`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-tastes/action/get-all-taste`).then((res:any) => res)
     },
     /**
     * 获取用户所有角色口味描述
     */
     getRoleTaste(): Promise<List<RoleTasteStrVO>> {
-      return httpGet(`/business/v1.0/pt/user-tastes/action/get-role-taste`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-tastes/action/get-role-taste`).then((res:any) => res)
     },
     /**
     * 获取用户的口味/过敏原
     */
     getTaste(params: { infoId: string }): Promise<UserTasteVO> {
-      return httpGet(`/business/v1.0/pt/user-tastes/action/get-taste`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-tastes/action/get-taste`,  {...params} ).then((res:any) => res)
     },
     /**
     * 小程序端查询所有并标记
     */
     getChosenAllTastes(params: { userInfoId: string }): Promise<List<UserGetChosenAllTastesVO>> {
-      return httpGet(`/business/v1.0/pt/user-tastes/action/getChosenAllTastes`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-tastes/action/getChosenAllTastes`,  {...params} ).then((res:any) => res)
     },
     /**
     * 保存口味/过敏原
     */
     saveTaste(dto: UserTasteDTO): Promise<boolean> {
-      return httpPost(`/business/v1.0/pt/user-tastes/action/save-taste`, dto).then((res:any) => res)
+      return httpPost(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-tastes/action/save-taste`, dto).then((res:any) => res)
     },
     /**
     * 小程序端查询分页用户勾选过敏源
     */
     seachChecktastes(params: { classify: string, userInfoId: string }): Promise<List<UserTasteMessageVo>> {
-      return httpGet(`/business/v1.0/pt/user-tastes/action/seach-checktastes`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/user-tastes/action/seach-checktastes`,  {...params} ).then((res:any) => res)
     },
   },
   wx: {
@@ -5653,7 +5654,7 @@ export default {
     * 获取微信消息模板列表
     */
     getTemplateList(): Promise<List<WxTemplate>> {
-      return httpGet(`/business/v1.0/pt/wx/action/get-template-list`).then((res:any) => res)
+      return httpGet(`/${config['business'] ? config["business"].serviceName : 'business'}/v1.0/pt/wx/action/get-template-list`).then((res:any) => res)
     },
   },
 }

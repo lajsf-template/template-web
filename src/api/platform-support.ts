@@ -1,4 +1,5 @@
-import {httpPost,httpGet,httpPut,httpDelete} from "@/service/http"
+import { httpPost, httpGet, httpPut, httpDelete } from "@/service/http"
+import config from '../../scripts/api/api.config.json'
 type int = number;
 		type List<T> = Array<T>
 		type Collection<T> = Array<T>
@@ -454,7 +455,7 @@ export default {
     * 健康检查
     */
     check(): Promise<boolean> {
-      return httpGet(`/platform-support/v1.0/pb/healths/action/check`).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/healths/action/check`).then((res:any) => res)
     },
   },
   managerUsers: {
@@ -462,13 +463,13 @@ export default {
     * 管理后台登录
     */
     login(loginUser: ManagerLoginVO): Promise<ManagerLoginAuthVO> {
-      return httpPost(`/platform-support/v1.0/pb/manager-users/action/login`, loginUser).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/manager-users/action/login`, loginUser).then((res:any) => res)
     },
     /**
     * 批量查询用户名称
     */
     queryNames(userIds: number[]): Promise<Map<long,string>> {
-      return httpPost(`/platform-support/v1.0/pt/manager-users/action/query-names`, userIds).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/manager-users/action/query-names`, userIds).then((res:any) => res)
     },
   },
   noticeCenters: {
@@ -476,7 +477,7 @@ export default {
     * APP查询分页NoticeCenter
     */
     list(params: { pageNo?: number, pageSize?: number }): Promise<PageList<NoticeCenter>> {
-      return httpGet(`/platform-support/v1.0/pb/notice-centers/action/list`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/notice-centers/action/list`,  {...params} ).then((res:any) => res)
     },
   },
   searchFinds: {
@@ -484,13 +485,13 @@ export default {
     * app点击发现
     */
     click(params: { kid: string }): Promise<boolean> {
-      return httpGet(`/platform-support/v1.0/pb/search-finds/action/click`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/search-finds/action/click`,  {...params} ).then((res:any) => res)
     },
     /**
     * app搜索发现列表
     */
     list(): Promise<List<SearchFindVO>> {
-      return httpGet(`/platform-support/v1.0/pb/search-finds/action/list`).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/search-finds/action/list`).then((res:any) => res)
     },
   },
   searchHotWords: {
@@ -498,13 +499,13 @@ export default {
     * app点击热词
     */
     click(params: { kid: string }): Promise<boolean> {
-      return httpGet(`/platform-support/v1.0/pb/search-hot-words/action/click`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/search-hot-words/action/click`,  {...params} ).then((res:any) => res)
     },
     /**
     * app搜索热词列表
     */
     list(): Promise<List<SearchHotWord>> {
-      return httpGet(`/platform-support/v1.0/pb/search-hot-words/action/list`).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/search-hot-words/action/list`).then((res:any) => res)
     },
   },
   slideImages: {
@@ -512,13 +513,13 @@ export default {
     * 验证
     */
     doCheck(body: SlideImageCheckTrail): Promise<string> {
-      return httpPost(`/platform-support/v1.0/pb/slide-images/action/doCheck`, body).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/slide-images/action/doCheck`, body).then((res:any) => res)
     },
     /**
     * 查询刷新
     */
     doQueryRefresh(body: SlideImageCheckInit): Promise<SlideCheckImage> {
-      return httpPost(`/platform-support/v1.0/pb/slide-images/action/doQueryRefresh`, body).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/slide-images/action/doQueryRefresh`, body).then((res:any) => res)
     },
   },
   upgrades: {
@@ -526,13 +527,13 @@ export default {
     * APP更新升级查询
     */
     check(params: { dataVersion?: string }): Promise<UpgradeInfoVO> {
-      return httpGet(`/platform-support/v1.0/pb/upgrades/action/check`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/upgrades/action/check`,  {...params} ).then((res:any) => res)
     },
     /**
     * APP主界面ICON配置
     */
     indexIcon(): Promise<IndexIconConfigVO> {
-      return httpGet(`/platform-support/v1.0/pb/upgrades/action/index-icon`).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/upgrades/action/index-icon`).then((res:any) => res)
     },
   },
   verify: {
@@ -540,19 +541,19 @@ export default {
     * 验证(手机)验证码
     */
     check(codeDTO: VerifyCode): Promise<number> {
-      return httpPost(`/platform-support/v1.0/pb/verify/action/check`, codeDTO).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/verify/action/check`, codeDTO).then((res:any) => res)
     },
     /**
     * 获取(手机)验证码
     */
     getCode(params: { serviceCode?: number, verifyCode?: string, verifyKey?: string, verifyType?: string }): Promise<number> {
-      return httpGet(`/platform-support/v1.0/pb/verify/action/getCode`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/verify/action/getCode`,  {...params} ).then((res:any) => res)
     },
     /**
     * 获取(手机)验证码
     */
     getCodeWithSlide(params: { serviceCode?: number, verifyCode?: string, verifyKey?: string, verifyType?: string }): Promise<number> {
-      return httpGet(`/platform-support/v1.0/pb/verify/action/getCodeWithSlide`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pb/verify/action/getCodeWithSlide`,  {...params} ).then((res:any) => res)
     },
   },
   excelExportRecords: {
@@ -560,7 +561,7 @@ export default {
     * 合作方查询分页ExcelExportRecord
     */
     listAdmin(params: { createDate?: string, createUserId?: string, endTime?: string, exportCode?: string, exportDesc?: string, exportParams?: string, exportStatus?: number, kid?: string, lastUpdateDate?: string, lastUpdateUserId?: string, pageNo?: number, pageSize?: number, resultExcel?: string, startTime?: string }): Promise<PageList<ExcelExportRecord>> {
-      return httpGet(`/platform-support/v1.0/pt/excel-export-records/action/list-admin`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/excel-export-records/action/list-admin`,  {...params} ).then((res:any) => res)
     },
   },
   excelExports: {
@@ -568,7 +569,7 @@ export default {
     * 合作方导出数据
     */
     export(excelExportRecord: ExcelExportRecord): Promise<boolean> {
-      return httpPost(`/platform-support/v1.0/pt/excel-exports/action/export`, excelExportRecord).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/excel-exports/action/export`, excelExportRecord).then((res:any) => res)
     },
   },
   excelImportRecords: {
@@ -576,7 +577,7 @@ export default {
     * 合作方查询分页ExcelImportRecord
     */
     listAdmin(params: { createDate?: string, createUserId?: string, endTime?: string, importCode?: string, importDesc?: string, importExcel?: string, importParams?: string, importStatus?: number, kid?: string, lastUpdateDate?: string, lastUpdateUserId?: string, pageNo?: number, pageSize?: number, resultExcel?: string, startTime?: string }): Promise<PageList<ExcelImportRecord>> {
-      return httpGet(`/platform-support/v1.0/pt/excel-import-records/action/list-admin`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/excel-import-records/action/list-admin`,  {...params} ).then((res:any) => res)
     },
   },
   exchangeInfos: {
@@ -584,7 +585,7 @@ export default {
     * APP端查询分页数据
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<ExchangeInfo>> {
-      return httpGet(`/platform-support/v1.0/pt/exchange-infos/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/exchange-infos/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   hotStopwordss: {
@@ -592,7 +593,7 @@ export default {
     * APP端查询分页数据
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<HotStopwords>> {
-      return httpGet(`/platform-support/v1.0/pt/hot-stopwordss/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/hot-stopwordss/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   hotWordss: {
@@ -600,7 +601,7 @@ export default {
     * APP端查询分页数据
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<HotWords>> {
-      return httpGet(`/platform-support/v1.0/pt/hot-wordss/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/hot-wordss/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   mqInfos: {
@@ -608,7 +609,7 @@ export default {
     * APP端查询分页数据
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<MqInfo>> {
-      return httpGet(`/platform-support/v1.0/pt/mq-infos/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/mq-infos/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   pushMessages: {
@@ -616,13 +617,13 @@ export default {
     * APP端删除消息
     */
     batchDelete(listRequest: ListRequest<string>): Promise<number> {
-      return httpPut(`/platform-support/v1.0/pt/push-messages/action/batch-delete`, listRequest).then((res:any) => res)
+      return httpPut(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/push-messages/action/batch-delete`, listRequest).then((res:any) => res)
     },
     /**
     * APP端查询分页数据
     */
     listPage(params: { messageType: string, pageNo?: number, pageSize?: number }): Promise<PageList<PushMessage>> {
-      return httpGet(`/platform-support/v1.0/pt/push-messages/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/push-messages/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   queueInfos: {
@@ -630,7 +631,7 @@ export default {
     * APP端查询分页数据
     */
     listPage(params: { pageNo?: number, pageSize?: number }): Promise<PageList<QueueInfo>> {
-      return httpGet(`/platform-support/v1.0/pt/queue-infos/action/list-page`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/queue-infos/action/list-page`,  {...params} ).then((res:any) => res)
     },
   },
   sensitiveWords: {
@@ -638,19 +639,19 @@ export default {
     * 校验文本中是否包含敏感词
     */
     check(sensitiveWordVO: SensitiveWordVO): Promise<boolean> {
-      return httpPost(`/platform-support/v1.0/pt/sensitive-words/action/check`, sensitiveWordVO).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/sensitive-words/action/check`, sensitiveWordVO).then((res:any) => res)
     },
     /**
     * 检查并返回文本中的敏感词
     */
     match(sensitiveWordVO: SensitiveWordVO): Promise<Set<string>> {
-      return httpPost(`/platform-support/v1.0/pt/sensitive-words/action/match`, sensitiveWordVO).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/sensitive-words/action/match`, sensitiveWordVO).then((res:any) => res)
     },
     /**
     * 替换文本中的敏感词并返回
     */
     replace(sensitiveWordVO: SensitiveWordVO): Promise<string> {
-      return httpPost(`/platform-support/v1.0/pt/sensitive-words/action/replace`, sensitiveWordVO).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/sensitive-words/action/replace`, sensitiveWordVO).then((res:any) => res)
     },
   },
   supportExpress: {
@@ -658,7 +659,7 @@ export default {
     * 合作方查询快递列表Express
     */
     listAdmin(): Promise<List<ExpressListVO>> {
-      return httpGet(`/platform-support/v1.0/pt/support-express/action/list-admin`).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/support-express/action/list-admin`).then((res:any) => res)
     },
   },
   uploads: {
@@ -666,43 +667,43 @@ export default {
     * 获取OSS上传签名参数(加密)
     */
     securitySign(params: { permission?: string }): Promise<UploadSignResult> {
-      return httpGet(`/platform-support/v1.0/pt/uploads/action/security-sign`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/uploads/action/security-sign`,  {...params} ).then((res:any) => res)
     },
     /**
     * 获取OSS上传签名参数
     */
     sign(params: { permission?: string }): Promise<UploadSignResult> {
-      return httpGet(`/platform-support/v1.0/pt/uploads/action/sign`,  {...params} ).then((res:any) => res)
+      return httpGet(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/uploads/action/sign`,  {...params} ).then((res:any) => res)
     },
     /**
     * 上传音频
     */
     uploadAudio(params: { audioConvertType?: string, cutAsync?: boolean, cutSeconds?: number, module?: string, permission?: string, silenceRemove?: boolean }): Promise<UploadResult> {
-      return httpPost(`/platform-support/v1.0/pt/uploads/action/upload-audio`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/uploads/action/upload-audio`,  {...params} ).then((res:any) => res)
     },
     /**
     * 上传文件
     */
     uploadFile(params: { module?: string, permission?: string }): Promise<UploadResult> {
-      return httpPost(`/platform-support/v1.0/pt/uploads/action/upload-file`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/uploads/action/upload-file`,  {...params} ).then((res:any) => res)
     },
     /**
     * 上传图片
     */
     uploadImage(params: { compressType?: string, gifMaxSize?: string, imageCompressSize?: string, module?: string, permission?: string, watermark?: string }): Promise<UploadResult> {
-      return httpPost(`/platform-support/v1.0/pt/uploads/action/upload-image`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/uploads/action/upload-image`,  {...params} ).then((res:any) => res)
     },
     /**
     * 上传PDF
     */
     uploadPdf(params: { fileName?: string, module?: string, permission?: string }): Promise<UploadResult> {
-      return httpPost(`/platform-support/v1.0/pt/uploads/action/upload-pdf`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/uploads/action/upload-pdf`,  {...params} ).then((res:any) => res)
     },
     /**
     * 上传视频
     */
     uploadVideo(params: { cutAsync?: boolean, cutSeconds?: number, module?: string, permission?: string, watermark?: string }): Promise<UploadResult> {
-      return httpPost(`/platform-support/v1.0/pt/uploads/action/upload-video`,  {...params} ).then((res:any) => res)
+      return httpPost(`/${config['platform-support'] ? config["platform-support"].serviceName : 'platform-support'}/v1.0/pt/uploads/action/upload-video`,  {...params} ).then((res:any) => res)
     },
   },
 }

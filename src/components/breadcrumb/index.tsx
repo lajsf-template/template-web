@@ -5,7 +5,8 @@ import { getLoginInfo } from '@/uses';
 import { hanleTreeToArray } from '@/utils';
 import './index.less';
 
-/**面包屑组件
+/**
+ * 面包屑组件
  */
 function BreadCrumbComponent(props: any) {
   let { pathname } = useLocation();
@@ -14,15 +15,11 @@ function BreadCrumbComponent(props: any) {
   if (!routes) {
     return null;
   }
-  /**一维路由数据
-   * 通过pathname，找到code
-   */
+
   useEffect(() => {
+    /** 一维路由数据，通过pathname，找到code */
     const routesArray = hanleTreeToArray(routes, 'routes');
-    /**当前路由 */
     let route = routesArray.find(item => {
-      //  /authority/member-detail/468464330037993472
-      // /authority/member-detail/:kid
       let index = item.path.indexOf('/:');
       if (index == -1) {
         return item.path == pathname;
@@ -37,11 +34,11 @@ function BreadCrumbComponent(props: any) {
       return;
     }
     if (route.menuType != 2) {
-      //菜单权限
       setBreads([]);
       return;
     }
-    /**当前code */
+
+    /** 当前code */
     let { code } = route;
     let codeArr = code.split('.');
     let breadsArr: any = [];

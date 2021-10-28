@@ -1,0 +1,9 @@
+{
+  "desc": "用于与服务端进行本地联调使用，通过修改serviceName与服务端联调提供的服务名对应即可",
+  "platform-support": {
+    "serviceName": "platform-support"
+  },
+  "business": {
+    "serviceName": "business"
+  }
+}
