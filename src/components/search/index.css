@@ -1,0 +1,18 @@
+.common-searchDiv {
+  align-items: flex-start !important;
+}
+.common-searchDiv .search-ipt-box {
+  flex-wrap: wrap;
+}
+.common-searchDiv .searchItem {
+  margin-right: 30px;
+  margin-bottom: 20px;
+}
+.common-searchDiv .searchBtn {
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+.common-searchDiv .label {
+  margin-right: 10px;
+  white-space: nowrap;
+}

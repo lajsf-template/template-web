@@ -30,12 +30,13 @@ const Demo = () => {
             : []
         }
       ></Uploader>
-      <Button style={{ marginLeft: 8 }} onClick={async () => {
-        const urls = await uploader.current ?.upload ?.();
-        console.log('urls', urls);
-        
-
-      }}>
+      <Button
+        style={{ marginLeft: 8 }}
+        onClick={async () => {
+          const urls = await uploader.current?.upload?.();
+          console.log('urls', urls);
+        }}
+      >
         保存
       </Button>
     </div>

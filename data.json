@@ -1,0 +1,145 @@
+{
+  "title": "用户",
+  "domain": "env.api.domain",
+  "serviceName": "env.api.service.default",
+  "resourceName": "users",
+  "breadcrumb": ["首页", "用户管理", "用户列表"],
+  "form": [
+    {
+      "label": "唯一ID",
+      "field": "kid",
+      "type": "hidden",
+      "value": "",
+      "desc": "",
+      "required": false,
+      "search": false
+    },
+    {
+      "label": "昵称",
+      "field": "nickName",
+      "type": "text",
+      "value": "",
+      "desc": "",
+      "required": true,
+      "search": true
+    },
+    {
+      "label": "头像",
+      "field": "headIcon",
+      "type": "image",
+      "value": "",
+      "desc": "图片大小100*100，PNG格式",
+      "required": true,
+      "search": false
+    },
+    {
+      "label": "密码",
+      "field": "password",
+      "type": "password",
+      "value": "",
+      "desc": "",
+      "required": false,
+      "search": false
+    },
+    {
+      "label": "性别",
+      "field": "sex",
+      "type": "select",
+      "typeData": [
+        {
+          "label": "未知",
+          "value": 0
+        },
+        {
+          "label": "男性",
+          "value": 1
+        },
+        {
+          "label": "女性",
+          "value": 2
+        }
+      ],
+      "desc": "",
+      "required": true,
+      "search": false
+    },
+    {
+      "label": "是否上架",
+      "field": "shelveFlag",
+      "type": "radio",
+      "typeData": [
+        {
+          "label": "上架",
+          "value": 0
+        },
+        {
+          "label": "下架",
+          "value": 1
+        }
+      ],
+      "desc": "",
+      "required": true,
+      "search": true
+    },
+    {
+      "label": "备注",
+      "field": "remark",
+      "type": "textarea",
+      "value": "",
+      "desc": "",
+      "required": false,
+      "search": false
+    }
+  ],
+  "table": {
+    "title": "用户数据表",
+    "elements": [
+      {
+        "type": "checkbox"
+      },
+      {
+        "title": "序号",
+        "type": "numbers"
+      },
+      {
+        "field": "kid",
+        "title": "ID",
+        "hide": true,
+        "sort": false
+      },
+      {
+        "field": "nickName",
+        "title": "昵称"
+      },
+      {
+        "field": "headIcon",
+        "title": "头像",
+        "templet": "custom.render.renderImage",
+        "height": "50px"
+      },
+      {
+        "field": "sex",
+        "title": "性别",
+        "templet": "custom.render.renderGender"
+      },
+      {
+        "field": "shelveFlag",
+        "title": "是否上架",
+        "templet": "custom.render.renderShelve"
+      },
+      {
+        "field": "delFlag",
+        "title": "是否删除",
+        "templet": "custom.render.renderDelete"
+      },
+      {
+        "field": "createDate",
+        "title": "创建时间"
+      },
+      {
+        "title": "操作",
+        "toolbar": "#tool-ops"
+      }
+    ]
+  }
+}

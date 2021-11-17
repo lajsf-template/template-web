@@ -8,8 +8,8 @@
     "test:coverage": "umi-test --coverage",
     "api": "node scripts/api/api.js",
     "env": "node scripts/env/env.js",
-    "postinstall": "node ./scripts/postinstall.ts"
-
+    "postinstall": "node ./scripts/postinstall.ts",
+    "create_template": "node ./scripts/create_t/index.js"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -36,6 +36,7 @@
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.20",
     "axios": "^0.24.0",
+    "fs-extra": "^10.0.0",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
     "typescript": "^4.1.2",
