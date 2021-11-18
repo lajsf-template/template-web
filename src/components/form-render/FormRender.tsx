@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-17 14:02:13
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-17 14:15:53
+ * @LastEditTime: 2021-11-18 17:56:07
  */
 import { DatePicker, Select, Input, Button } from 'antd';
 import DatePickerProps from 'antd';
@@ -14,14 +14,14 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 /** 表单变化监听 */
-const onFormItemChange = (value: any, type: string, index: number) => {
-  let formValue: any = value;
-  if (type == 'input') {
-    formValue = value.target.value;
-  }
-};
+// const onFormItemChange = (value: any, type: string, index: number) => {
+//   let formValue: any = value;
+//   if (type == 'input') {
+//     formValue = value.target.value;
+//   }
+// };
 
-const useFormRender = (item, index) => {
+const FormRender = ({ item, onFormItemChange, modalProps, index }) => {
   /** 日期区间ui */
   const renderRangePicker = (item: FormItemIpo, index: number) => {
     return (
@@ -30,7 +30,7 @@ const useFormRender = (item, index) => {
         allowClear={true}
         {...item.options}
         onChange={(data: any, dateString: string) => {
-          onFormItemChange(dateString, item.type, index);
+          onFormItemChange(dateString, item, index);
         }}
       />
     );
@@ -44,7 +44,7 @@ const useFormRender = (item, index) => {
         allowClear={true}
         {...item.options}
         onChange={(data: any, dateString: string) => {
-          onFormItemChange(dateString, item.type, index);
+          onFormItemChange(dateString, item, index);
         }}
       />
     );
@@ -59,7 +59,7 @@ const useFormRender = (item, index) => {
         style={{ width: item.width || 140 }}
         placeholder={item.placeholder}
         onChange={(value: any) => {
-          onFormItemChange(value, item.type, index);
+          onFormItemChange(value, item, index);
         }}
         filterOption={(input: any, option: any) => {
           return option
@@ -90,33 +90,37 @@ const useFormRender = (item, index) => {
         defaultValue={item.value}
         placeholder={item.placeholder}
         onChange={(e: any) => {
-          onFormItemChange(e, item.type, index);
+          onFormItemChange(e, item, index);
         }}
+        disabled={modalProps?.type === '查看'}
       />
     );
   };
 
   let component = null;
-  switch (item.type) {
-    case 'daterange':
-      component = renderRangePicker(item, index);
-      break;
-    case 'date':
-      component = renderDatePicker(item, index);
-      break;
-    case 'select':
-      component = renderSelect(item, index);
-      break;
-    case 'radio':
-      /**暂时未用到 */
-      break;
-    case 'input':
-      component = renderInput(item, index);
-      break;
-    default:
-      component = renderInput(item, index);
+  if (item) {
+    console.log('item.type----', item.type);
+    switch (item.type) {
+      case 'daterange':
+        component = renderRangePicker(item, index);
+        break;
+      case 'date':
+        component = renderDatePicker(item, index);
+        break;
+      case 'select':
+        component = renderSelect(item, index);
+        break;
+      case 'radio':
+        /**暂时未用到 */
+        break;
+      case 'text':
+        component = renderInput(item, index);
+        break;
+      default:
+        component = renderInput(item, index);
+    }
   }
   return component;
 };
 
-export default useFormRender;
+export default FormRender;

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Button, Form } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Row, Col, Input, Button } from 'antd';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import './index.less';
 
-import useFormRender from '../hooks/useFormRender';
+import FormRender from '../form-render/FormRender';
 
 export interface FormItemIpo {
   /** 表单类型: daterange（日期区间）| date（日期）| select(选择) | input(输入框) */
@@ -31,7 +32,7 @@ interface SearchProps<T = {}> {
   /** 表单数据结构 */
   formData: { [k in keyof T]: FormItemIpo };
   /** 点击搜索回调 */
-  onSearchClick: (v: any) => void;
+  onSearch: (v: any) => void;
   /** 额外的按钮(例：导出按钮) */
   extraBtn?: () => JSX.Element;
 }
@@ -39,7 +40,7 @@ interface SearchProps<T = {}> {
 /**
  * Search组件
  */
-function Search<T>({ formData, onSearchClick, extraBtn }: SearchProps<T>) {
+function Search<T>({ formData, onSearch, extraBtn }: SearchProps<T>) {
   /** form数据 */
   const [data] = useState(() => {
     let arr = Object.keys(formData).map((key: string) => {
@@ -48,39 +49,60 @@ function Search<T>({ formData, onSearchClick, extraBtn }: SearchProps<T>) {
     return arr;
   });
 
-  /** 搜索监听 */
+  const form: any = {};
+
+  /** 搜索 */
   const search = () => {
-    let form: ObjIpo = {};
-    data.map((item) => {
-      form[item.key] = item.value;
-    });
-    onSearchClick(form);
+    onSearch(form);
+  };
+
+  // 单个输入监控
+  const handleFormItemChange = (e: any, item, index) => {
+    if (item.type == 'text') {
+      form[item.field] = e.target.value;
+    }
+  };
+
+  const [expand, setExpand] = useState(false);
+
+  const getFields = () => {
+    const count = expand ? 10 : 6;
+    const children = [];
+    formData.length > 0 &&
+      formData.map((item, index) => {
+        console.log(!!!item.search);
+        item.search &&
+          children.push(
+            <Col span={8} key={index}>
+              <Form.Item label={item.label} name={item.label}>
+                <FormRender
+                  item={item}
+                  key={index}
+                  index={index}
+                  onFormItemChange={handleFormItemChange}
+                />
+              </Form.Item>
+            </Col>,
+          );
+      });
+    return children;
   };
 
   return (
     <div className="common-searchDiv">
       <div className="search-ipt-box">
-        <Form
-          layout="inline"
-          size="small"
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 14 }}
-        >
-          {data.map((item, index) => {
-            return (
-              <div className="searchItem" key={Math.random() + index}>
-                <span className="label">{item.label}</span>
-                {useFormRender(item, index)}
-              </div>
-            );
-          })}
+        <Form className="ant-advanced-search-form">
+          <Row gutter={24}>{getFields()}</Row>
+          {getFields().length > 0 && (
+            <Row>
+              <Col span={24} style={{ textAlign: 'right' }}>
+                <Button type="primary" htmlType="submit" onClick={search}>
+                  搜索
+                </Button>
+              </Col>
+            </Row>
+          )}
         </Form>
-      </div>
-      <div className="searchBtn">
-        <Button type="primary" onClick={search}>
-          搜索
-        </Button>
-        {extraBtn && extraBtn()}
       </div>
     </div>
   );
