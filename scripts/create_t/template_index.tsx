@@ -5,9 +5,10 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 14:03:23
+ * @LastEditTime: 2021-11-19 18:02:49
  */
 import { useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router';
 
 import Table from '@/components/table';
 import Search from '@/components/search';
@@ -35,7 +36,8 @@ const editUrl = `${baseUrl}/action/update`;
 const detailUrl = `${baseUrl}/action/detail`;
 const listUrl = `${baseUrl}/action/list-page`;
 
-function Users() {
+function moduleName() {
+  const history = useHistory();
   const [selectionType, setSelectionType] = useState<'checkbox' | 'radio'>(
     'checkbox',
   );
@@ -52,7 +54,6 @@ function Users() {
 
   // 页面挂载触发事件
   useEffect(() => {
-    console.log('btn----', btn);
     initList();
   }, []);
 
@@ -122,41 +123,21 @@ function Users() {
 
   // 编辑
   const onedit = (kid: any, type) => {
-    ondetail(kid, type);
+    history.push('/users/form', {
+      kid,
+    });
   };
+
   // 查看
-  const ondetail = (kid: any, type) => {
-    axios
-      .get(detailUrl, {
-        params: { kid },
-        headers,
-      })
-      .then((res) => {
-        if (res.status) {
-          const formState = [];
-          formData.map((v) => {
-            const temp = Object.assign({}, v);
-            temp.value = res.data.data[v.field];
-            formState.push(temp);
-          });
-          setformState([...formState]);
-          setmodalProps({
-            type,
-            title,
-          });
-          setisShowModal(true);
-        }
-      });
+  const ondetail = (kid: any) => {
+    history.push('/users/detail', {
+      kid,
+    });
   };
 
   // 新增
   const onadd = () => {
-    setmodalProps({
-      type: '添加',
-      title,
-    });
-    setformState([...formData]);
-    setisShowModal(true);
+    history.push('/users/form');
   };
 
   // 删除
@@ -197,7 +178,7 @@ function Users() {
         onSubmit={handleSubmit}
         modalProps={modalProps}
       />
-      <div className={styles.title}>{title}</div>
+      <div className={styles.title}>{title}列表</div>
       <div className={styles.center}>
         <Search formData={formState} onSearch={handleSearch} />
         <Row gutter={24}>
@@ -227,4 +208,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default moduleName;

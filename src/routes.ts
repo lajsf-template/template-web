@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:28:37
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 09:40:16
+ * @LastEditTime: 2021-11-19 17:52:39
  */
 export default [
   {
@@ -46,10 +46,34 @@ export default [
     ],
   },
   {
-    path: 'users',
-    code: '卢秀英',
-    component: '@/pages/users/index',
-    name: '卢秀英',
-    title: '卢秀英',
+    path: '/users',
+    code: 'users',
+    name: '邵勇',
+    title: '邵勇',
+    routes: [
+      {
+        path: '/users/list',
+        code: 'users-list',
+        component: '@/pages/users/index',
+        name: '邵勇-列表',
+        title: '邵勇-列表',
+      },
+      {
+        path: '/users/detail',
+        code: 'users-detail',
+        component: '@/pages/users/detail',
+        name: '邵勇-详情',
+        hideInMenu: true,
+        title: '邵勇-详情',
+      },
+      {
+        path: '/users/form',
+        code: 'users-form',
+        component: '@/pages/users/form',
+        name: '邵勇-表单',
+        hideInMenu: true,
+        title: '邵勇-表单',
+      },
+    ],
   },
 ];

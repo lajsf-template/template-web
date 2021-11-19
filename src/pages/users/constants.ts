@@ -44,7 +44,7 @@ export const formData = [
   },
   {
     label: '姓名',
-    field: 'username',
+    field: 'name',
     type: 'text',
     value: '',
     desc: '',
@@ -176,7 +176,7 @@ export const TableColumns = [
     fixed: null,
   },
   {
-    field: 'username',
+    field: 'name',
     title: '姓名',
     hide: null,
     sort: null,
@@ -318,7 +318,7 @@ export const btn = {
     { text: '编辑', fn: 'edit' },
   ],
 };
-export const title = '武娟';
+export const title = '苏秀英';
 export const domain = 'https://api-dev.yryz.com/gateway';
 export const serviceName = '/platform-support/v1.0';
 export const resourceName = 'manager-accounts';

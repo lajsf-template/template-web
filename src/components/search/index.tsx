@@ -3,7 +3,7 @@ import { Form, Row, Col, Input, Button } from 'antd';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import './index.less';
 
-import FormRender from '../form-render/FormRender';
+import FormRender from '../form-render';
 import { keyword } from '@umijs/deps/compiled/chalk';
 
 export interface FormItemIpo {

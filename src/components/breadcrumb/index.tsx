@@ -19,7 +19,7 @@ function BreadCrumbComponent(props: any) {
   useEffect(() => {
     /** 一维路由数据，通过pathname，找到code */
     const routesArray = hanleTreeToArray(routes, 'routes');
-    let route = routesArray.find(item => {
+    let route = routesArray.find((item) => {
       let index = item.path.indexOf('/:');
       if (index == -1) {
         return item.path == pathname;
@@ -43,7 +43,7 @@ function BreadCrumbComponent(props: any) {
     let codeArr = code.split('.');
     let breadsArr: any = [];
     codeArr.reduce((pre: string, code: string, index: number) => {
-      let bread = routesArray.find(item => {
+      let bread = routesArray.find((item) => {
         if (item.code == pre) {
           return item;
         }
@@ -53,6 +53,7 @@ function BreadCrumbComponent(props: any) {
     });
     breadsArr.push(route);
     setBreads(breadsArr);
+    console.log('breadsArr----', breadsArr);
   }, [pathname]);
 
   return (

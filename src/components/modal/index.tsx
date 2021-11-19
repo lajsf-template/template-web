@@ -5,12 +5,12 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-17 13:21:48
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 11:26:11
+ * @LastEditTime: 2021-11-19 18:03:10
  */
 import React, { useEffect, useState } from 'react';
 import { Modal as AModal, Button, Form } from 'antd';
 import './index.less';
-import FormRender from '../form-render/FormRender';
+import FormRender from '../form-render';
 
 const Modal: React.FC = ({
   isShowModal,
@@ -46,7 +46,6 @@ const Modal: React.FC = ({
     formData.map((v: any) => {
       __tempform[v.field] = v.value;
     });
-    console.log('__tempform---', __tempform);
     setform({ ...__tempform });
   }, [formData]);
 

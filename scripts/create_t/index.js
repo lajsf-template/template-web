@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 09:52:12
+ * @LastEditTime: 2021-11-19 17:52:09
  */
 const { resolve } = require('path');
 const fs = require('fs');
@@ -57,7 +57,7 @@ axios.get(reqUrl).then((res) => {
     // 生成配置文件
     fs.writeFile(dirName + `/constants.ts`, data, function (error) {
       // 写入table以及样式
-      fs.readFile(resolve(__dirname, './template.tsx'), (err, data) => {
+      fs.readFile(resolve(__dirname, './template_index.tsx'), (err, data) => {
         data = data.toString().replace(
           /moduleName/g,
           process.argv[2].replace(/^\S/, (s) => s.toUpperCase()),
@@ -68,6 +68,42 @@ axios.get(reqUrl).then((res) => {
           });
           fs.writeFile(dirName + `/index.less`, styleString, function (error) {
             console.info(`${dirName}/index.less创建成`);
+          });
+        }
+      });
+
+      // 生成表单页面
+      fs.readFile(resolve(__dirname, './template_form.tsx'), (err, data) => {
+        data = data
+          .toString()
+          .replace(
+            /moduleName/g,
+            process.argv[2].replace(/^\S/, (s) => s.toUpperCase()) + 'Form',
+          );
+        if (!err) {
+          fs.writeFile(dirName + `/form.tsx`, data, function (error) {
+            console.info(`${dirName}/form.tsx创建成`);
+          });
+          fs.writeFile(dirName + `/form.less`, styleString, function (error) {
+            console.info(`${dirName}/form.less创建成`);
+          });
+        }
+      });
+
+      // 生成详情页面
+      fs.readFile(resolve(__dirname, './template_detail.tsx'), (err, data) => {
+        data = data
+          .toString()
+          .replace(
+            /moduleName/g,
+            process.argv[2].replace(/^\S/, (s) => s.toUpperCase()) + 'Detail',
+          );
+        if (!err) {
+          fs.writeFile(dirName + `/detail.tsx`, data, function (error) {
+            console.info(`${dirName}/detail.tsx创建成`);
+          });
+          fs.writeFile(dirName + `/detail.less`, styleString, function (error) {
+            console.info(`${dirName}/detail.less创建成`);
           });
         }
       });
@@ -82,11 +118,35 @@ axios.get(reqUrl).then((res) => {
     const dataString = data.toString();
     if (dataString.indexOf(moduleName) === -1) {
       const routeItem = JSON.stringify({
-        path: `${moduleName}`,
-        code: `${title}`,
-        component: `@/pages/${moduleName}/index`,
+        path: `/${moduleName}`,
+        code: `${moduleName}`,
         name: `${title}`,
         title: `${title}`,
+        routes: [
+          {
+            path: `/${moduleName}/list`,
+            code: `${moduleName}-list`,
+            component: `@/pages/${moduleName}/index`,
+            name: `${title}-列表`,
+            title: `${title}-列表`,
+          },
+          {
+            path: `/${moduleName}/detail`,
+            code: `${moduleName}-detail`,
+            component: `@/pages/${moduleName}/detail`,
+            name: `${title}-详情`,
+            hideInMenu: true,
+            title: `${title}-详情`,
+          },
+          {
+            path: `/${moduleName}/form`,
+            code: `${moduleName}-form`,
+            component: `@/pages/${moduleName}/form`,
+            name: `${title}-表单`,
+            hideInMenu: true,
+            title: `${title}-表单`,
+          },
+        ],
       });
       data = insertStr(dataString, dataString.length - 4, routeItem);
     }
