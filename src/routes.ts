@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:28:37
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 18:21:03
+ * @LastEditTime: 2021-11-19 18:22:59
  */
 export default [
   {
@@ -13,7 +13,7 @@ export default [
     component: '@/pages/login/index',
     headerRender: false, // 不展示顶栏
     footerRender: false, // 不展示页脚
-    menuRender: false, // 不展示菜单
+    menuRender: false // 不展示菜单
   },
   {
     path: '/demo',
@@ -26,14 +26,14 @@ export default [
         code: 'demo-1',
         component: '@/pages/demo/demo-1',
         name: 'demo-1',
-        title: 'demo-1',
+        title: 'demo-1'
       },
       {
         path: '/demo/demo-2',
         code: 'demo-2',
         component: '@/pages/demo/demo-2',
         name: 'demo-2',
-        title: 'demo-2',
+        title: 'demo-2'
       },
       {
         path: '/demo/demo-3',
@@ -41,8 +41,8 @@ export default [
         hideInMenu: true,
         component: '@/pages/demo/demo-3',
         name: 'demo-3',
-        title: 'demo-3',
-      },
-    ],
-  },
+        title: 'demo-3'
+      }
+    ]
+  }
 ];
