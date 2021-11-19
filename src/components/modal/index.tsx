@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-17 13:21:48
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-18 19:18:35
+ * @LastEditTime: 2021-11-19 08:56:53
  */
 import React, { useEffect, useState } from 'react';
 import { Modal as AModal, Button, Form } from 'antd';
@@ -39,7 +39,6 @@ const Modal: React.FC = ({
     if (item.type == 'text') {
       _tempFormField[item.field] = e.target.value;
     }
-    setform({ ..._tempFormField });
   };
 
   useEffect(() => {

@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-18 18:29:30
+ * @LastEditTime: 2021-11-19 09:01:15
  */
 import { useEffect, useRef, useState } from 'react';
 
@@ -115,7 +115,6 @@ function Users() {
         headers,
       })
       .then((res) => {
-        console.log('res.data.data---', res.data.data);
         if (res.status) {
           const formState = [];
           formData.map((v) => {
@@ -132,24 +131,13 @@ function Users() {
         }
       });
   };
-  // 弹出编辑窗口
-  const editRecord = (kid: any) => {
-    alert('编辑---' + kid);
-
-    // setmodalProps({
-    //   type: '编辑',
-    //   title,
-    // });
-    // setisShowModal(true);
-  };
-
   // 弹出新增窗口
   const addRecord = () => {
-    console.log('弹出新增窗口');
     setmodalProps({
       type: '添加',
       title,
     });
+    setformState([...formData]);
     setisShowModal(true);
   };
 
@@ -173,9 +161,14 @@ function Users() {
     }),
   };
 
+  const handleFormData = (data) => {
+    setformState([...data]);
+  };
+
   return (
     <div className={styles.orderAdmin}>
       <Modal
+        onFormData={handleFormData}
         formData={formState}
         isShowModal={isShowModal}
         onShowModal={setisShowModal}
