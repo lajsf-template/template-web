@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-17 14:02:13
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-18 17:56:07
+ * @LastEditTime: 2021-11-19 11:40:58
  */
 import { DatePicker, Select, Input, Button } from 'antd';
 import DatePickerProps from 'antd';
@@ -99,7 +99,6 @@ const FormRender = ({ item, onFormItemChange, modalProps, index }) => {
 
   let component = null;
   if (item) {
-    console.log('item.type----', item.type);
     switch (item.type) {
       case 'daterange':
         component = renderRangePicker(item, index);

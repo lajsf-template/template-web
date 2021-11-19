@@ -4,6 +4,7 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import './index.less';
 
 import FormRender from '../form-render/FormRender';
+import { keyword } from '@umijs/deps/compiled/chalk';
 
 export interface FormItemIpo {
   /** 表单类型: daterange（日期区间）| date（日期）| select(选择) | input(输入框) */
@@ -49,7 +50,7 @@ function Search<T>({ formData, onSearch, extraBtn }: SearchProps<T>) {
     return arr;
   });
 
-  const form: any = {};
+  const [form, setform] = useState({});
 
   /** 搜索 */
   const search = () => {
@@ -58,9 +59,14 @@ function Search<T>({ formData, onSearch, extraBtn }: SearchProps<T>) {
 
   // 单个输入监控
   const handleFormItemChange = (e: any, item, index) => {
-    if (item.type == 'text') {
-      form[item.field] = e.target.value;
+    const temp: any = Object.assign({}, { ...form });
+    if (item.type == 'text' || item.type == 'hidden') {
+      console.log('e---->', e.target.value);
+      temp[item.field] = e.target.value;
+    } else {
+      temp[item.field] = e.toString();
     }
+    setform({ ...temp });
   };
 
   const [expand, setExpand] = useState(false);
@@ -70,19 +76,20 @@ function Search<T>({ formData, onSearch, extraBtn }: SearchProps<T>) {
     const children = [];
     formData.length > 0 &&
       formData.map((item, index) => {
-        console.log(!!!item.search);
         item.search &&
           children.push(
-            <Col span={8} key={index}>
-              <Form.Item label={item.label} name={item.label}>
-                <FormRender
-                  item={item}
-                  key={index}
-                  index={index}
-                  onFormItemChange={handleFormItemChange}
-                />
-              </Form.Item>
-            </Col>,
+            <Form.Item
+              label={item.label}
+              name={item.label}
+              style={{ marginBottom: 10 }}
+            >
+              <FormRender
+                item={item}
+                key={'s_sub' + index}
+                index={index}
+                onFormItemChange={handleFormItemChange}
+              />
+            </Form.Item>,
           );
       });
     return children;
@@ -91,16 +98,12 @@ function Search<T>({ formData, onSearch, extraBtn }: SearchProps<T>) {
   return (
     <div className="common-searchDiv">
       <div className="search-ipt-box">
-        <Form className="ant-advanced-search-form">
-          <Row gutter={24}>{getFields()}</Row>
+        <Form className="ant-advanced-search-form" layout={'inline'}>
+          {getFields()}
           {getFields().length > 0 && (
-            <Row>
-              <Col span={24} style={{ textAlign: 'right' }}>
-                <Button type="primary" htmlType="submit" onClick={search}>
-                  搜索
-                </Button>
-              </Col>
-            </Row>
+            <Button type="primary" htmlType="submit" onClick={search}>
+              搜索
+            </Button>
           )}
         </Form>
       </div>

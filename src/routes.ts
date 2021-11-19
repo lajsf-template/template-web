@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:28:37
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 09:43:25
+ * @LastEditTime: 2021-11-19 09:40:16
  */
 export default [
   {
@@ -44,5 +44,12 @@ export default [
         title: 'demo-3',
       },
     ],
+  },
+  {
+    path: 'users',
+    code: '卢秀英',
+    component: '@/pages/users/index',
+    name: '卢秀英',
+    title: '卢秀英',
   },
 ];

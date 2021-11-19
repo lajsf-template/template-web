@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-18 16:20:15
+ * @LastEditTime: 2021-11-19 09:52:12
  */
 const { resolve } = require('path');
 const fs = require('fs');
@@ -23,13 +23,17 @@ const dirName = resolve('./src/pages/' + moduleName);
 axios.get(reqUrl).then((res) => {
   //处理带有函数的字段
   // console.log('********', JSON.stringify(res.data.table.elements));
-  const { form, table, title, domain, serviceName, resourceName } = res.data;
+  const { form, table, title, domain, serviceName, resourceName, btn } =
+    res.data;
   const data =
     'export const formData = ' +
     JSON.stringify(form) +
     ';' +
     'export const TableColumns = ' +
     JSON.stringify(table.elements) +
+    ';' +
+    'export const btn = ' +
+    JSON.stringify(btn) +
     ';' +
     'export const title = ' +
     JSON.stringify(title) +

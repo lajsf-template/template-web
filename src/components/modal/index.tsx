@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-17 13:21:48
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 08:56:53
+ * @LastEditTime: 2021-11-19 11:26:11
  */
 import React, { useEffect, useState } from 'react';
 import { Modal as AModal, Button, Form } from 'antd';
@@ -63,10 +63,9 @@ const Modal: React.FC = ({
         {formData.length > 0 &&
           formData.map((item, index) => {
             return (
-              <div className="searchItem" key={Math.random() + index}>
+              <div className="searchItem" key={'m_' + index}>
                 <Form.Item
                   label={item.label}
-                  name={item.label}
                   rules={[
                     {
                       required: item.required,
@@ -77,7 +76,7 @@ const Modal: React.FC = ({
                   <FormRender
                     item={item}
                     modalProps={modalProps}
-                    key={index}
+                    key={'m_sub' + index}
                     index={index}
                     onFormItemChange={handleFormItemChange}
                   />
