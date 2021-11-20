@@ -33,7 +33,7 @@ const editUrl = `${baseUrl}/action/update`;
 const detailUrl = `${baseUrl}/action/detail`;
 const listUrl = `${baseUrl}/action/list-page`;
 
-function moduleName() {
+function UsersForm() {
   const [data, setdata] = useState({});
   const { state } = useLocation<any>();
   const [formState, setformState] = useState<any>([]);
@@ -44,6 +44,7 @@ function moduleName() {
     } else {
       setformState([...formData]);
     }
+    console.log('formData---', formData);
   }, []);
 
   const headers = {
@@ -170,4 +171,4 @@ function moduleName() {
   );
 }
 
-export default moduleName;
+export default UsersForm;
