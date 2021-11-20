@@ -5,12 +5,12 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-20 11:28:14
+ * @LastEditTime: 2021-11-20 18:39:43
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 
-import { Button, Col, Row, Form, message } from 'antd';
+import { Button, Col, Row, Form, message, Input } from 'antd';
 import FormRender from '@/components/form-render';
 
 import {
@@ -37,12 +37,18 @@ function moduleName() {
   const [data, setdata] = useState({});
   const { state } = useLocation<any>();
   const [formState, setformState] = useState<any>([]);
+  const [form] = Form.useForm();
+
   // 页面挂载触发事件
   useEffect(() => {
     if (state?.kid) {
       initList();
     } else {
-      setformState([...formData]);
+      const temp = {};
+      formData.map((v) => {
+        temp[v.field] = v.value;
+      });
+      form.setFieldsValue({ ...temp });
     }
   }, []);
 
@@ -65,55 +71,43 @@ function moduleName() {
       })
       .then((res: any) => {
         if (res.status) {
-          console.log('res.data.data---', res.data.data);
-          const tempAry = [];
-          formData.map((v) => {
-            const temp = Object.assign({}, { ...v });
-            temp['value'] = res.data.data[v['field']];
-            tempAry.push(temp);
-          });
-          setformState([...tempAry]);
+          setformState(res.data.data);
+          form.setFieldsValue(res.data.data);
         }
       });
   };
 
   // 单个输入监控
   const handleFormItemChange = (e: any, item, index) => {
-    const tempAry = [...formState];
-    tempAry.map((v, i) => {
-      if (i === index) {
-        if (item.type === 'text' || item.type === 'hidden') {
-          tempAry[index].value = e.target.value;
-        } else {
-          tempAry[index].value = e.toString();
-        }
-      }
-    });
-    setformState([...tempAry]);
+    let tempsingle = null;
+    if (item.type === 'text' || item.type === 'hidden') {
+      tempsingle = { [item.field]: e.target.value };
+    } else {
+      tempsingle = { [item.field]: e.toString() };
+    }
+    form.setFieldsValue(Object.assign({}, { ...formState }, { ...tempsingle }));
   };
 
   // 渲染dom
   const getFields = () => {
-    const children = [];
-    formState.length > 0 &&
-      formState.map((item, index) => {
-        item.search &&
-          children.push(
-            <Form.Item
-              label={item.label}
-              name={item.label}
-              style={{ marginBottom: 10 }}
-            >
-              <FormRender
-                item={item}
-                key={'s_sub' + index}
-                index={index}
-                onFormItemChange={handleFormItemChange}
-              />
-            </Form.Item>,
-          );
-      });
-    return children;
+    //这是问题？
+    const ary = [];
+    console.log('formData--', formData);
+
+    formData.map((item, index) => {
+      const __name = item.field;
+      ary.push(
+        <Form.Item
+          name={__name}
+          label={item.label}
+          rules={[{ required: true }]}
+          key={index}
+        >
+          <Input />
+        </Form.Item>,
+      );
+    });
+    return ary;
   };
 
   // 表单请求
@@ -139,11 +133,8 @@ function moduleName() {
       message.error(info.data.msg, 2.5);
     }
   };
-  const handleSubmit = () => {
-    const params = {};
-    formState.map((v) => {
-      params[v.field] = v.value;
-    });
+  const onFinish = () => {
+    const params = form.getFieldsValue(true);
     message.loading('数据请求中...', 2.5).then(() => {
       if (state?.kid) {
         // 编辑
@@ -155,16 +146,27 @@ function moduleName() {
     });
   };
 
+  const onFill = () => {
+    // form.setFieldsValue({
+    //   name: 'Hello world!',
+    //   gender: 'male',
+    // });
+  };
   return (
     <div className={styles.orderAdmin}>
       <div className={styles.title}>{title}</div>
-      <Form className="ant-advanced-search-form">
+      <Form
+        form={form}
+        className="ant-advanced-search-form"
+        onFinish={onFinish}
+      >
         {getFields()}
-        {getFields().length > 0 && (
-          <Button type="primary" htmlType="submit" onClick={handleSubmit}>
-            提交
-          </Button>
-        )}
+        <Button type="primary" htmlType="submit">
+          提交
+        </Button>
+        <Button type="link" htmlType="button" onClick={onFill}>
+          Fill form
+        </Button>
       </Form>
     </div>
   );

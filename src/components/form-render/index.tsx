@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-17 14:02:13
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 17:59:39
+ * @LastEditTime: 2021-11-20 18:35:38
  */
 import { DatePicker, Select, Input, Button } from 'antd';
 import DatePickerProps from 'antd';
@@ -21,7 +21,7 @@ const { Option } = Select;
 //   }
 // };
 
-const FormRender = ({ item, onFormItemChange, modalProps, index }) => {
+const FormRender = ({ item, onFormItemChange, index }) => {
   /** 日期区间ui */
   const renderRangePicker = (item: FormItemIpo, index: number) => {
     return (
@@ -92,7 +92,6 @@ const FormRender = ({ item, onFormItemChange, modalProps, index }) => {
         onChange={(e: any) => {
           onFormItemChange(e, item, index);
         }}
-        disabled={modalProps?.type === '查看'}
       />
     );
   };

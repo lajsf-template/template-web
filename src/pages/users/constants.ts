@@ -318,7 +318,7 @@ export const btn = {
     { text: '编辑', fn: 'edit' },
   ],
 };
-export const title = '汤刚';
+export const title = '钱勇';
 export const domain = 'https://api-dev.yryz.com/gateway';
 export const serviceName = '/platform-support/v1.0';
 export const resourceName = 'manager-accounts';
