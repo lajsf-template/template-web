@@ -5,19 +5,15 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 17:48:32
+ * @LastEditTime: 2021-11-22 17:51:20
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
-
 import { Row, Button, Pagination, message, Modal } from 'antd';
 import Table from '@/components/table';
 import Search from '@/components/search';
-
 import { formData, TableColumns, title, btn, requestUrl } from './constants';
-
 import styles from './index.less';
-
 import axios from 'axios';
 
 function Users() {
@@ -111,7 +107,6 @@ function Users() {
 
   //列表搜索
   const handleSearch = (fields: any) => {
-    alert(JSON.stringify(fields));
     initList(pagination, fields);
   };
 

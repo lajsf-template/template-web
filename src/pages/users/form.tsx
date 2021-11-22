@@ -5,12 +5,11 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 17:17:23
+ * @LastEditTime: 2021-11-22 17:51:31
  */
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useHistory } from 'react-router';
-
 import {
   Button,
   Form,
@@ -21,11 +20,8 @@ import {
   Select,
   Radio,
 } from 'antd';
-
 import { formData, title, requestUrl } from './constants';
-
-import styles from './index.less';
-
+import styles from './form.less';
 import axios from 'axios';
 
 function UsersForm() {

@@ -5,14 +5,12 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 17:17:26
+ * @LastEditTime: 2021-11-22 17:52:01
  */
 import { useEffect, useRef, useState } from 'react';
 import { Row, Col } from 'antd';
 import { formData, title, requestUrl } from './constants';
-
-import styles from './index.less';
-
+import styles from './detail.less';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 
@@ -32,6 +30,7 @@ function moduleName() {
     userId: '507997599207161856',
     token: '7e9ed620-9d1a-4b0a-aae0-b7854c21be4f',
   };
+
   // 初始化列表数据
   const initList = (fields = '') => {
     axios
