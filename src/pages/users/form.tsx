@@ -5,12 +5,24 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-20 18:39:43
+ * @LastEditTime: 2021-11-22 09:35:07
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 
-import { Button, Col, Row, Form, message, Input } from 'antd';
+import {
+  Button,
+  Col,
+  Row,
+  Form,
+  message,
+  Input,
+  DatePicker,
+  RangePicker,
+  TimePicker,
+  Select,
+  Radio,
+} from 'antd';
 import FormRender from '@/components/form-render';
 
 import {
@@ -93,8 +105,73 @@ function UsersForm() {
     //这是问题？
     const ary = [];
     console.log('formData--', formData);
+
     formData.map((item, index) => {
+      console.log('item----', item);
       const __name = item.field;
+      const dateConfig = {
+        rules: [
+          {
+            type: 'object' as const,
+            required: true,
+            message: 'Please select time!',
+          },
+        ],
+      };
+      const rangeConfig = {
+        rules: [
+          {
+            type: 'array' as const,
+            required: true,
+            message: 'Please select time!',
+          },
+        ],
+      };
+      let conponents;
+      console.log('item.type---', item.type);
+      switch (item.type) {
+        case 'text':
+          conponents = <Input />;
+          break;
+        case 'hidden':
+          conponents = <Input />;
+          break;
+        case 'date':
+          conponents = <DatePicker {...config} />;
+          break;
+        case 'daterange':
+          conponents = <DatePicker.RangePicker {...rangeConfig} />;
+          break;
+        case 'time':
+          conponents = <TimePicker {...item.options} />;
+          break;
+        case 'textarea':
+          conponents = <Input.TextArea rows={4} />;
+          break;
+        case 'password':
+          conponents = <Input.Password />;
+          break;
+        case 'select':
+          conponents = (
+            <Select>
+              {item.options.map((v) => {
+                return <Option value={v.value}>{v.label}</Option>;
+              })}
+            </Select>
+          );
+          break;
+        case 'radio':
+          conponents = (
+            <Radio.Group>
+              {item.options.map((v) => {
+                return <Radio value={v.value}>{v.label}</Radio>;
+              })}
+            </Radio.Group>
+          );
+          break;
+        default:
+          conponents = <Input />;
+      }
       ary.push(
         <Form.Item
           name={__name}
@@ -102,7 +179,7 @@ function UsersForm() {
           rules={[{ required: true }]}
           key={index}
         >
-          <Input />
+          {conponents}
         </Form.Item>,
       );
     });
@@ -145,12 +222,6 @@ function UsersForm() {
     });
   };
 
-  const onFill = () => {
-    // form.setFieldsValue({
-    //   name: 'Hello world!',
-    //   gender: 'male',
-    // });
-  };
   return (
     <div className={styles.orderAdmin}>
       <div className={styles.title}>{title}</div>
@@ -162,9 +233,6 @@ function UsersForm() {
         {getFields()}
         <Button type="primary" htmlType="submit">
           提交
-        </Button>
-        <Button type="link" htmlType="button" onClick={onFill}>
-          Fill form
         </Button>
       </Form>
     </div>

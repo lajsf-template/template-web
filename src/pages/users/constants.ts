@@ -12,7 +12,7 @@ export const formData = [
   {
     label: '登录名',
     field: 'loginName',
-    type: 'daterange',
+    type: 'text',
     value: '',
     desc: '',
     required: true,
@@ -22,7 +22,7 @@ export const formData = [
   {
     label: '密码',
     field: 'password',
-    type: 'date',
+    type: 'password',
     value: '',
     desc: '',
     required: true,
@@ -98,7 +98,7 @@ export const formData = [
   {
     label: '备注信息',
     field: 'remarks',
-    type: 'text',
+    type: 'textarea',
     value: '',
     desc: '',
     required: true,
@@ -108,12 +108,15 @@ export const formData = [
   {
     label: '删除标记',
     field: 'delFlag',
-    type: 'text',
+    type: 'radio',
     value: '',
     desc: '',
     required: true,
     search: true,
-    options: null,
+    options: [
+      { value: 0, label: '是' },
+      { value: 1, label: '否' },
+    ],
   },
   {
     label: '绑定钉钉用户id',
@@ -318,7 +321,7 @@ export const btn = {
     { text: '编辑', fn: 'edit' },
   ],
 };
-export const title = '钱勇';
+export const title = '廖娟';
 export const domain = 'https://api-dev.yryz.com/gateway';
 export const serviceName = '/platform-support/v1.0';
 export const resourceName = 'manager-accounts';
