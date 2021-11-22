@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 18:05:27
+ * @LastEditTime: 2021-11-22 19:15:41
  */
 const { resolve } = require('path');
 const fs = require('fs');
@@ -20,10 +20,21 @@ const styleString =
 
 // 1.通过shell命令生成目录文件
 const dirName = resolve('./src/pages/' + moduleName);
-axios.get(reqUrl).then((res) => {
+
+if (fs.existsSync(resolve(__dirname, `./${moduleName}.json`))) {
+  fs.readFile(resolve(__dirname, `./${moduleName}.json`), (err, config) => {
+    doneWithFn(JSON.parse(config.toString()));
+  });
+} else {
+  fs.writeFile(resolve(__dirname, `./${moduleName}.json`), '', (error) => {
+    console.log(`${moduleName}.json文件新建完成`);
+  });
+}
+
+const doneWithFn = (res) => {
+  console.log('res---', res);
   //处理带有函数的字段
-  const { form, table, title, domain, serviceName, resourceName, btn } =
-    res.data;
+  const { form, table, title, domain, serviceName, resourceName, btn } = res;
   // 常规请求路由
   const __domain = env[domain.split('.')[1]][domain.split('.')[2]];
   const __serviceName =
@@ -181,22 +192,19 @@ axios.get(reqUrl).then((res) => {
       );
     }
   });
-});
+};
 
 const createDir = (path, cb) => {
   var pathAry = path.split('/');
   for (var i = 0; i < pathAry.length; i++) {
     var curPath = pathAry.slice(0, i + 1).join('/');
     (function (curPath) {
-      //将curPath传入闭包
-      fs.exists(curPath, function (exists) {
-        if (!exists) {
-          fs.mkdir(curPath, function () {
-            console.log(curPath + ' is created!');
-            cb();
-          });
-        }
-      });
+      if (!fs.existsSync(curPath)) {
+        fs.mkdir(curPath, function () {
+          console.log(curPath + ' is created!');
+          cb();
+        });
+      }
     })(curPath);
   }
 };

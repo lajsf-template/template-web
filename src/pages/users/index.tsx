@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 17:51:20
+ * @LastEditTime: 2021-11-22 18:50:18
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -224,7 +224,8 @@ function Users() {
                 <Button
                   onClick={handleFn.bind(this, '', v.text, v.fn)}
                   key={index}
-                  style={{ marginRight: 10, marginLeft: 10 }}
+                  style={{ marginLeft: 10 }}
+                  type="primary"
                 >
                   {v.text}
                 </Button>
@@ -242,21 +243,21 @@ function Users() {
           pagination={false}
           scroll={{ x: 1800, y: 420 }}
         />
-        <div style={{ overflow: 'hidden', padding: '10px 0 0 10px' }}>
-          <div style={{ float: 'right' }}>
-            <Pagination
-              showQuickJumper
-              hideOnSinglePage={false}
-              defaultCurrent={pagination.current}
-              current={pagination.current}
-              total={pagination.total}
-              pageSize={pagination.pageSize}
-              onChange={onPageChange}
-              showTotal={(e) => {
-                return '共有' + e + '条';
-              }}
-            />
-          </div>
+        <div style={{ paddingTop: 10 }}>
+          <Pagination
+            style={{ float: 'right' }}
+            showQuickJumper
+            hideOnSinglePage={false}
+            defaultCurrent={pagination.current}
+            current={pagination.current}
+            total={pagination.total}
+            pageSize={pagination.pageSize}
+            onChange={onPageChange}
+            showTotal={(e) => {
+              return '共有' + e + '条';
+            }}
+          />
+          <div style={{ clear: 'both' }}></div>
         </div>
       </div>
     </div>
