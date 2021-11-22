@@ -9,7 +9,6 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { Row, Col } from 'antd';
-
 import {
   formData,
   domain,

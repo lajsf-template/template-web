@@ -82,13 +82,9 @@ function Search<T>({ formData, onSearch, extraBtn }: SearchProps<T>) {
               label={item.label}
               name={item.label}
               style={{ marginBottom: 10 }}
+              key={index}
             >
-              <FormRender
-                item={item}
-                key={'s_sub' + index}
-                index={index}
-                onFormItemChange={handleFormItemChange}
-              />
+              <FormRender item={item} onFormItemChange={handleFormItemChange} />
             </Form.Item>,
           );
       });

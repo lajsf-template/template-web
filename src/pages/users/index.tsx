@@ -5,12 +5,12 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 10:02:00
+ * @LastEditTime: 2021-11-22 11:36:43
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 
-import { Row, Button } from 'antd';
+import { Row, Button, Pagination } from 'antd';
 import Table from '@/components/table';
 import Search from '@/components/search';
 
@@ -38,10 +38,18 @@ function Users() {
   const tableRef = useRef<KeyValuePair>({});
 
   const [formState, setformState] = useState(formData);
+  const [loading, setloading] = useState(false);
+  const [pagination, setpagination] = useState({
+    current: 1,
+    pageSize: 2,
+    total: 0,
+  });
+
+  const [searchfields, setsearchfields] = useState({});
 
   // 页面挂载触发事件
   useEffect(() => {
-    initList();
+    initList(pagination);
   }, []);
 
   const headers = {
@@ -52,17 +60,19 @@ function Users() {
     token: '7e9ed620-9d1a-4b0a-aae0-b7854c21be4f',
   };
   // 初始化列表数据
-  const initList = (fields = '') => {
+  const initList = (pagination: any) => {
     console.log('初始化列表数据');
+    console.log('pagination', pagination);
+    console.log('searchfields---', searchfields);
     // 获得数据
     axios
       .post(
         listUrl,
         {
-          pageNo: 1,
-          pageSize: 10,
+          pageNo: pagination.current,
+          pageSize: pagination.pageSize,
           param: {
-            where: fields,
+            where: searchfields,
           },
         },
         {
@@ -70,17 +80,24 @@ function Users() {
         },
       )
       .then((res) => {
+        // setloading(false);
         settableData(res.data.data.entities);
+        setpagination({
+          ...pagination,
+          total: 100,
+        });
       });
 
     // 编辑查看按钮
     TableColumns.map((v, index) => {
       if (v.key === 'operation') {
-        console.log('v.render---', v.render);
         v.render = function (text, record, index) {
           return btn.td.map((v: any) => {
             return (
-              <a onClick={handleFn.bind(this, record.kid, v.text, v.fn)}>
+              <a
+                onClick={handleFn.bind(this, record.kid, v.text, v.fn)}
+                key={`${record.kid}_${v.text}`}
+              >
                 {v.text}
               </a>
             );
@@ -96,7 +113,9 @@ function Users() {
 
   //列表搜索
   const handleSearch = (fields: any) => {
-    initList(fields);
+    console.log('fields---', fields);
+    setsearchfields(fields);
+    initList(pagination);
   };
 
   // 分发方法
@@ -155,6 +174,9 @@ function Users() {
     setformState([...data]);
   };
 
+  const onPageChange = (current, filter) => {
+    initList(Object.assign({}, pagination, { current, pageSize: filter }));
+  };
   return (
     <div className={styles.orderAdmin}>
       <div className={styles.title}>{title}列表</div>
@@ -177,10 +199,23 @@ function Users() {
             ...rowSelection,
           }}
           ref={tableRef}
-          loading={false}
+          loading={loading}
           columns={TableColumns}
           tableData={tableData}
+          pagination={false}
           scroll={{ x: 1800, y: 800 }}
+        />
+        <Pagination
+          showQuickJumper
+          hideOnSinglePage={false}
+          defaultCurrent={pagination.current}
+          current={pagination.current}
+          total={pagination.total}
+          pageSize={pagination.pageSize}
+          onChange={onPageChange}
+          showTotal={(e) => {
+            return '共有' + e + '条';
+          }}
         />
       </div>
     </div>
