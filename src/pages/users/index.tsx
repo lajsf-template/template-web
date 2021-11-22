@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 11:36:43
+ * @LastEditTime: 2021-11-22 11:43:56
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -35,10 +35,8 @@ function Users() {
   const history = useHistory();
 
   const [tableData, settableData] = useState([]);
-  const tableRef = useRef<KeyValuePair>({});
 
   const [formState, setformState] = useState(formData);
-  const [loading, setloading] = useState(false);
   const [pagination, setpagination] = useState({
     current: 1,
     pageSize: 2,
@@ -80,7 +78,6 @@ function Users() {
         },
       )
       .then((res) => {
-        // setloading(false);
         settableData(res.data.data.entities);
         setpagination({
           ...pagination,
@@ -198,8 +195,6 @@ function Users() {
             type: 'checkbox',
             ...rowSelection,
           }}
-          ref={tableRef}
-          loading={loading}
           columns={TableColumns}
           tableData={tableData}
           pagination={false}
