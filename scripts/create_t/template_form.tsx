@@ -5,10 +5,11 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 10:00:14
+ * @LastEditTime: 2021-11-22 17:17:23
  */
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 
 import {
   Button,
@@ -21,27 +22,17 @@ import {
   Radio,
 } from 'antd';
 
-import {
-  formData,
-  domain,
-  serviceName,
-  resourceName,
-  title,
-} from './constants';
+import { formData, title, requestUrl } from './constants';
 
 import styles from './index.less';
 
 import axios from 'axios';
 
-const baseUrl = `${domain}${serviceName}/pv/${resourceName}`;
-const addUrl = `${baseUrl}/action/create`;
-const editUrl = `${baseUrl}/action/update`;
-const detailUrl = `${baseUrl}/action/detail`;
-
 function moduleName() {
   const { state } = useLocation<any>();
   const [formState, setformState] = useState<any>([]);
   const [form] = Form.useForm();
+  const history = useHistory();
 
   // 页面挂载触发事件
   useEffect(() => {
@@ -49,8 +40,12 @@ function moduleName() {
       initList();
     } else {
       const temp = {};
+      console.log('formData---', formData);
       formData.map((v) => {
-        temp[v.field] = v.value;
+        console.log('--hidden---', v.type !== 'hidden');
+        if (v.type !== 'hidden') {
+          temp[v.field] = v.value;
+        }
       });
       form.setFieldsValue({ ...temp });
     }
@@ -58,7 +53,7 @@ function moduleName() {
 
   const headers = {
     'Content-Type': 'application/json',
-    tenantId: 'platform',
+    tenantId: 'nutritiondiet',
     devType: '3',
     userId: '507997599207161856',
     token: '7e9ed620-9d1a-4b0a-aae0-b7854c21be4f',
@@ -67,7 +62,7 @@ function moduleName() {
   // 初始化列表数据
   const initList = (fields = '') => {
     axios
-      .get(detailUrl, {
+      .get(requestUrl.detailUrl, {
         params: { kid: state.kid },
         headers,
       })
@@ -105,6 +100,7 @@ function moduleName() {
       };
       let conponents;
       console.log('item.type---', item.type);
+      if (item.type == 'hidden') return null;
       switch (item.type) {
         case 'text':
           conponents = <Input />;
@@ -154,6 +150,10 @@ function moduleName() {
           label={item.label}
           rules={[{ required: true }]}
           key={index}
+          labelAlign="right"
+          labelCol={{
+            style: { width: 120, marginRight: 10 },
+          }}
         >
           {conponents}
         </Form.Item>,
@@ -164,15 +164,9 @@ function moduleName() {
 
   // 表单请求
   const doneWithForm = (reqType, url, param, cb) => {
-    axios[reqType](
-      url,
-      {
-        param,
-      },
-      {
-        headers,
-      },
-    ).then((res: any) => {
+    axios[reqType](url, param, {
+      headers,
+    }).then((res: any) => {
       cb(res);
     });
   };
@@ -180,36 +174,52 @@ function moduleName() {
   // 提交表单【包括编辑/或新增】
   const loadWithResponse = (info: any) => {
     if (info.data.status) {
-      message.success(info.data.msg, 2.5);
+      message.success(info.data.msg, 0.8);
     } else {
-      message.error(info.data.msg, 2.5);
+      message.error(info.data.msg, 0.8);
     }
+    setTimeout(() => {
+      history.goBack();
+    }, 1800);
   };
   const onFinish = () => {
     const params = form.getFieldsValue(true);
-    message.loading('数据请求中...', 2.5).then(() => {
+    message.loading('数据请求中...', 0.5).then(() => {
       if (state?.kid) {
         // 编辑
-        doneWithForm('put', editUrl, params, loadWithResponse);
+        doneWithForm('put', requestUrl.editUrl, params, loadWithResponse);
       } else {
         // 添加
-        doneWithForm('post', addUrl, params, loadWithResponse);
+        doneWithForm('post', requestUrl.addUrl, params, loadWithResponse);
       }
     });
   };
 
   return (
     <div className={styles.orderAdmin}>
-      <div className={styles.title}>{title}</div>
+      <div className={styles.title}>
+        {state?.kid ? '编辑' : '添加'}
+        {title}
+      </div>
       <Form
         form={form}
         className="ant-advanced-search-form"
         onFinish={onFinish}
+        style={{ padding: '50px 25% 50px 80px' }}
       >
         {getFields()}
-        <Button type="primary" htmlType="submit">
-          提交
-        </Button>
+        <Form.Item labelCol={{ span: 4 }} wrapperCol={{ span: 8, offset: 3 }}>
+          <Button type="primary" htmlType="submit">
+            保存
+          </Button>
+          <Button
+            type="button"
+            style={{ marginLeft: 10 }}
+            onClick={() => history.go(-1)}
+          >
+            取消
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   );

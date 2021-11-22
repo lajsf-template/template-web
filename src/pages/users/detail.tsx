@@ -5,25 +5,16 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 10:03:11
+ * @LastEditTime: 2021-11-22 17:17:26
  */
 import { useEffect, useRef, useState } from 'react';
 import { Row, Col } from 'antd';
-import {
-  formData,
-  domain,
-  serviceName,
-  resourceName,
-  title,
-} from './constants';
+import { formData, title, requestUrl } from './constants';
 
 import styles from './index.less';
 
 import { useLocation } from 'react-router';
 import axios from 'axios';
-
-const baseUrl = `${domain}${serviceName}/pv/${resourceName}`;
-const detailUrl = `${baseUrl}/action/detail`;
 
 function UsersDetail() {
   const { state } = useLocation<{ kid: string }>();
@@ -36,7 +27,7 @@ function UsersDetail() {
 
   const headers = {
     'Content-Type': 'application/json',
-    tenantId: 'platform',
+    tenantId: 'nutritiondiet',
     devType: '3',
     userId: '507997599207161856',
     token: '7e9ed620-9d1a-4b0a-aae0-b7854c21be4f',
@@ -44,7 +35,7 @@ function UsersDetail() {
   // 初始化列表数据
   const initList = (fields = '') => {
     axios
-      .get(detailUrl, {
+      .get(requestUrl.detailUrl, {
         params: { kid: state.kid },
         headers,
       })
@@ -57,8 +48,8 @@ function UsersDetail() {
 
   return (
     <div className={styles.orderAdmin}>
-      <div className={styles.title}>{title}详情</div>
-      <div className={styles.center}>
+      <div className={styles.title}>查看{title}</div>
+      <div className={styles.center} style={{ minHeight: 500 }}>
         {formData.map((v, index) => {
           return (
             <Row

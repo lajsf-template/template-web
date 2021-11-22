@@ -75,6 +75,7 @@ function TableSearch<T = any>(
   useEffect(() => {
     if (Array.isArray(tableData)) {
       setDataSource(tableData as []);
+      console.log('tableData-----', tableData);
     }
   }, [tableData]);
 
@@ -118,7 +119,7 @@ function TableSearch<T = any>(
     }
     listApi &&
       listApi(params)
-        .then(res => {
+        .then((res) => {
           let { count, entities } = res || ({} as any);
           /** 有响应回调函数，执行响应回调函数 */
           if (responseCb) {
@@ -172,7 +173,6 @@ function TableSearch<T = any>(
   );
 }
 
-export default React.forwardRef(TableSearch as React.ForwardRefRenderFunction<
-  unknown,
-  TableSearchProps
->);
+export default React.forwardRef(
+  TableSearch as React.ForwardRefRenderFunction<unknown, TableSearchProps>,
+);

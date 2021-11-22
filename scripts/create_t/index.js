@@ -5,14 +5,14 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 17:52:09
+ * @LastEditTime: 2021-11-22 17:44:11
  */
 const { resolve } = require('path');
 const fs = require('fs');
 const axios = require('axios');
 const moduleName = process.argv[2];
 
-const reqUrl = `http://rap2api.taobao.org/app/mock/294102/example/1637137178650?type=${moduleName}`;
+const reqUrl = `https://www.fastmock.site/mock/e8823b6c0884aa629219855d2ce7f5f9/test/conf`;
 const env = require('./env');
 // 代码模版
 const styleString =
@@ -22,9 +22,21 @@ const styleString =
 const dirName = resolve('./src/pages/' + moduleName);
 axios.get(reqUrl).then((res) => {
   //处理带有函数的字段
-  // console.log('********', JSON.stringify(res.data.table.elements));
   const { form, table, title, domain, serviceName, resourceName, btn } =
     res.data;
+  // 常规请求路由
+  const __domain = env[domain.split('.')[1]][domain.split('.')[2]];
+  const __serviceName =
+    env[serviceName.split('.')[1]][serviceName.split('.')[2]][
+      serviceName.split('.')[3]
+    ];
+  const baseUrl = `${__domain}${__serviceName}/pv/${resourceName}`;
+  const addUrl = `${baseUrl}/action/create`;
+  const editUrl = `${baseUrl}/action/update`;
+  const detailUrl = `${baseUrl}/action/detail`;
+  const listUrl = `${baseUrl}/action/list-page`;
+  const removeUrl = `${baseUrl}/action/batch-update`;
+
   const data =
     'export const formData = ' +
     JSON.stringify(form) +
@@ -39,17 +51,22 @@ axios.get(reqUrl).then((res) => {
     JSON.stringify(title) +
     ';' +
     'export const domain = ' +
-    JSON.stringify(env[domain.split('.')[1]][domain.split('.')[2]]) +
+    JSON.stringify(__domain) +
     ';' +
     'export const serviceName = ' +
-    JSON.stringify(
-      env[serviceName.split('.')[1]][serviceName.split('.')[2]][
-        serviceName.split('.')[3]
-      ],
-    ) +
+    JSON.stringify(__serviceName) +
     ';' +
     'export const resourceName = ' +
     JSON.stringify(resourceName) +
+    ';' +
+    'export const requestUrl = ' +
+    JSON.stringify({
+      addUrl,
+      editUrl,
+      detailUrl,
+      listUrl,
+      removeUrl,
+    }) +
     ';';
 
   // 2.通过模版生成文件
