@@ -5,15 +5,14 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-19 18:02:49
+ * @LastEditTime: 2021-11-22 10:02:00
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 
+import { Row, Button } from 'antd';
 import Table from '@/components/table';
 import Search from '@/components/search';
-import Modal from '@/components/modal';
-import { Button, Col, Row } from 'antd';
 
 import {
   formData,
@@ -28,27 +27,15 @@ import {
 import styles from './index.less';
 
 import axios from 'axios';
-import { text } from '@umijs/deps/compiled/express';
 
 const baseUrl = `${domain}${serviceName}/pv/${resourceName}`;
-const addUrl = `${baseUrl}/action/create`;
-const editUrl = `${baseUrl}/action/update`;
-const detailUrl = `${baseUrl}/action/detail`;
 const listUrl = `${baseUrl}/action/list-page`;
 
 function Users() {
   const history = useHistory();
-  const [selectionType, setSelectionType] = useState<'checkbox' | 'radio'>(
-    'checkbox',
-  );
 
   const [tableData, settableData] = useState([]);
   const tableRef = useRef<KeyValuePair>({});
-  const [isShowModal, setisShowModal] = useState(false);
-  const [modalProps, setmodalProps] = useState({
-    type: '添加',
-    title,
-  });
 
   const [formState, setformState] = useState(formData);
 
@@ -170,14 +157,6 @@ function Users() {
 
   return (
     <div className={styles.orderAdmin}>
-      <Modal
-        onFormData={handleFormData}
-        formData={formState}
-        isShowModal={isShowModal}
-        onShowModal={setisShowModal}
-        onSubmit={handleSubmit}
-        modalProps={modalProps}
-      />
       <div className={styles.title}>{title}列表</div>
       <div className={styles.center}>
         <Search formData={formState} onSearch={handleSearch} />

@@ -5,34 +5,28 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 09:35:07
+ * @LastEditTime: 2021-11-22 10:00:14
  */
-import { useEffect, useRef, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 
 import {
   Button,
-  Col,
-  Row,
   Form,
   message,
   Input,
   DatePicker,
-  RangePicker,
   TimePicker,
   Select,
   Radio,
 } from 'antd';
-import FormRender from '@/components/form-render';
 
 import {
   formData,
-  TableColumns,
   domain,
   serviceName,
   resourceName,
   title,
-  btn,
 } from './constants';
 
 import styles from './index.less';
@@ -43,10 +37,8 @@ const baseUrl = `${domain}${serviceName}/pv/${resourceName}`;
 const addUrl = `${baseUrl}/action/create`;
 const editUrl = `${baseUrl}/action/update`;
 const detailUrl = `${baseUrl}/action/detail`;
-const listUrl = `${baseUrl}/action/list-page`;
 
 function moduleName() {
-  const [data, setdata] = useState({});
   const { state } = useLocation<any>();
   const [formState, setformState] = useState<any>([]);
   const [form] = Form.useForm();
@@ -72,8 +64,6 @@ function moduleName() {
     token: '7e9ed620-9d1a-4b0a-aae0-b7854c21be4f',
   };
 
-  // 得到详情
-
   // 初始化列表数据
   const initList = (fields = '') => {
     axios
@@ -89,25 +79,11 @@ function moduleName() {
       });
   };
 
-  // 单个输入监控
-  const handleFormItemChange = (e: any, item, index) => {
-    let tempsingle = null;
-    if (item.type === 'text' || item.type === 'hidden') {
-      tempsingle = { [item.field]: e.target.value };
-    } else {
-      tempsingle = { [item.field]: e.toString() };
-    }
-    form.setFieldsValue(Object.assign({}, { ...formState }, { ...tempsingle }));
-  };
-
   // 渲染dom
   const getFields = () => {
     //这是问题？
     const ary = [];
-    console.log('formData--', formData);
-
     formData.map((item, index) => {
-      console.log('item----', item);
       const __name = item.field;
       const dateConfig = {
         rules: [
@@ -137,7 +113,7 @@ function moduleName() {
           conponents = <Input />;
           break;
         case 'date':
-          conponents = <DatePicker {...config} />;
+          conponents = <DatePicker {...dateConfig} />;
           break;
         case 'daterange':
           conponents = <DatePicker.RangePicker {...rangeConfig} />;
