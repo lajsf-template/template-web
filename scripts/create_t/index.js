@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 17:44:11
+ * @LastEditTime: 2021-11-22 18:05:27
  */
 const { resolve } = require('path');
 const fs = require('fs');
@@ -165,7 +165,10 @@ axios.get(reqUrl).then((res) => {
           },
         ],
       });
-      data = insertStr(dataString, dataString.length - 4, routeItem);
+      data = insertStr(dataString, dataString.length - 4, routeItem).replace(
+        /\,\,/g,
+        ',',
+      );
     }
 
     if (!err) {
