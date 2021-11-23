@@ -5,16 +5,16 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 17:52:01
+ * @LastEditTime: 2021-11-23 17:03:08
  */
 import { useEffect, useRef, useState } from 'react';
 import { Row, Col } from 'antd';
-import { formData, title, requestUrl } from './constants';
-import styles from './detail.less';
+import { formData, title, requestUrl } from '../constants';
+import styles from './index.less';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 
-function UsersDetail() {
+function moduleName() {
   const { state } = useLocation<{ kid: string }>();
   const [data, setdata] = useState({});
 
@@ -57,9 +57,9 @@ function UsersDetail() {
                 marginBottom: 16 + 'px',
               }}
             >
-              <Col
+              <label
                 style={{
-                  width: 168,
+                  width: 188,
                   marginRight: 16,
                   color: '#8c93a1',
                   fontSize: 14,
@@ -68,7 +68,7 @@ function UsersDetail() {
                 span={2}
               >
                 {v.label}:
-              </Col>
+              </label>
               {data[v.field]}
             </Row>
           );
@@ -78,4 +78,4 @@ function UsersDetail() {
   );
 }
 
-export default UsersDetail;
+export default moduleName;

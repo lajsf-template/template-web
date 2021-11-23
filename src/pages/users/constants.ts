@@ -28,14 +28,7 @@ export const formData = [
   },
 ];
 export const TableColumns = [
-  {
-    dataIndex: 'kid',
-    key: 'kid',
-    title: 'ID',
-    hide: true,
-    sort: false,
-    fixed: 'left',
-  },
+  { dataIndex: 'kid', key: 'kid', title: 'ID', hide: true, sort: false },
   { title: '内容', dataIndex: 'content', key: 'content' },
   { title: '反馈图片，最多6张', dataIndex: 'image', key: 'image' },
   { dataIndex: 'createDate', title: '创建时间', key: 'createDate' },
@@ -51,7 +44,7 @@ export const TableColumns = [
     key: 'operation',
     toolbar: '#tool-ops',
     fixed: 'right',
-    minWidth: 140,
+    width: 150,
   },
 ];
 export const btn = {

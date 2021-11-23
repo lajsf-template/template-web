@@ -5,26 +5,30 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-23 09:58:03
+ * @LastEditTime: 2021-11-23 16:42:44
  */
+const path = require('path');
 const { resolve } = require('path');
 const fs = require('fs');
 const axios = require('axios');
-const moduleName = process.argv[2];
+const argv = process.argv[2];
 
 const reqUrl = `https://www.fastmock.site/mock/e8823b6c0884aa629219855d2ce7f5f9/test/conf`;
 const env = require('./env');
-const { dir } = require('console');
+const { mkdirsSync } = require('fs-extra');
 // 代码模版
 const styleString =
-  '.orderAdmin{background-color:white;margin:16px;padding:16px;.title{padding-bottom:16px;font-weight:bold;font-size:16px;line-height:24px;border-bottom:1px solid #f0f1f3}.center{margin-top:16px}}';
+  '.orderAdmin{background-color:white;margin:16px;padding:16px;.title{padding-bottom:16px;font-weight:bold;font-size:16px;line-height:24px;border-bottom:1px solid #f0f1f3}.center{margin-top:16px}} /deep/.ant-form-item-label{overflow: visible !important;}';
 
 // 1.通过shell命令生成目录文件
-const dirName = resolve('./src/pages/' + moduleName);
+const doneArgv = argv.split('/');
+console.log('doneArgv---', doneArgv);
+const entityName = doneArgv[doneArgv.length - 1];
+console.log('entityName---', entityName);
 
-if (fs.existsSync(resolve(__dirname, `./${moduleName}.json`))) {
+if (fs.existsSync(resolve(__dirname, `./${entityName}.json`))) {
   //如果有本地配置文件就读本地配置文件
-  fs.readFile(resolve(__dirname, `./${moduleName}.json`), (err, config) => {
+  fs.readFile(resolve(__dirname, `./${entityName}.json`), (err, config) => {
     doneWithFn(JSON.parse(config.toString()));
   });
 } else {
@@ -32,16 +36,16 @@ if (fs.existsSync(resolve(__dirname, `./${moduleName}.json`))) {
   axios
     .get(reqUrl, {
       params: {
-        type: moduleName,
+        type: entityName,
       },
     })
     .then((res) => {
       fs.writeFile(
-        resolve(__dirname, `./${moduleName}.json`),
+        resolve(__dirname, `./${entityName}.json`),
         JSON.stringify(res.data),
         (error) => {
-          console.log(`${moduleName}.json文件新建完成`);
-          doneWithFn(JSON.parse(config.toString()));
+          console.log(`${entityName}.json文件新建完成`);
+          doneWithFn(res.data);
         },
       );
     });
@@ -96,21 +100,35 @@ const doneWithFn = (res) => {
     ';';
 
   // 2.通过模版生成文件
-  createDir(dirName, function () {
-    // 生成配置文件
-    fs.writeFile(dirName + `/constants.ts`, data, function (error) {
+  const createDir = (dirname, callback) => {
+    fs.exists(dirname, function (exists) {
+      if (exists) {
+        callback();
+      } else {
+        createDir(path.dirname(dirname), function () {
+          fs.mkdir(dirname, callback);
+          console.log(
+            '在' + path.dirname(dirname) + '目录创建好' + dirname + '目录',
+          );
+        });
+      }
+    });
+  };
+  createDir(resolve(__dirname, '../../src/pages/' + argv), function () {
+    const dirArgv = resolve(__dirname, '../../src/pages/' + argv);
+    fs.writeFile(dirArgv + `/constants.ts`, data, function (error) {
       // 写入table以及样式
       fs.readFile(resolve(__dirname, './template_index.tsx'), (err, data) => {
         data = data.toString().replace(
-          /moduleName/g,
-          process.argv[2].replace(/^\S/, (s) => s.toUpperCase()),
+          /entityName/g,
+          argv.replace(/^\S/, (s) => s.toUpperCase()),
         );
         if (!err) {
-          fs.writeFile(dirName + `/index.tsx`, data, function (error) {
-            console.info(`${dirName}/index.tsx创建成功`);
+          fs.writeFile(dirArgv + `/index.tsx`, data, function (error) {
+            console.info(`${dirArgv}/index.tsx创建成功`);
           });
-          fs.writeFile(dirName + `/index.less`, styleString, function (error) {
-            console.info(`${dirName}/index.less创建成功`);
+          fs.writeFile(dirArgv + `/index.less`, styleString, function (error) {
+            console.info(`${dirArgv}/index.less创建成功`);
           });
         }
       });
@@ -120,19 +138,19 @@ const doneWithFn = (res) => {
         data = data
           .toString()
           .replace(
-            /moduleName/g,
-            process.argv[2].replace(/^\S/, (s) => s.toUpperCase()) + 'Form',
+            /entityName/g,
+            argv.replace(/^\S/, (s) => s.toUpperCase()) + 'Form',
           );
         if (!err) {
-          fs.mkdir(dirName + '/form', function () {
-            fs.writeFile(dirName + `/form/index.tsx`, data, function (error) {
-              console.info(`${dirName}/form.tsx创建成功`);
+          fs.mkdir(dirArgv + '/form', function () {
+            fs.writeFile(dirArgv + `/form/index.tsx`, data, function (error) {
+              console.info(`${dirArgv}/form.tsx创建成功`);
             });
             fs.writeFile(
-              dirName + `/form/index.less`,
+              dirArgv + `/form/index.less`,
               styleString,
               function (error) {
-                console.info(`${dirName}/form.less创建成功`);
+                console.info(`${dirArgv}/form.less创建成功`);
               },
             );
           });
@@ -144,19 +162,19 @@ const doneWithFn = (res) => {
         data = data
           .toString()
           .replace(
-            /moduleName/g,
-            process.argv[2].replace(/^\S/, (s) => s.toUpperCase()) + 'Detail',
+            /entityName/g,
+            argv.replace(/^\S/, (s) => s.toUpperCase()) + 'Detail',
           );
         if (!err) {
-          fs.mkdir(dirName + '/detail', function () {
-            fs.writeFile(dirName + `/detail/index.tsx`, data, function (error) {
-              console.info(`${dirName}/detail/index.tsx创建成功`);
+          fs.mkdir(dirArgv + '/detail', function () {
+            fs.writeFile(dirArgv + `/detail/index.tsx`, data, function (error) {
+              console.info(`${dirArgv}/detail/index.tsx创建成功`);
             });
             fs.writeFile(
-              dirName + `/detail/index.less`,
+              dirArgv + `/detail/index.less`,
               styleString,
               function (error) {
-                console.info(`${dirName}/detail/index.less创建成功`);
+                console.info(`${dirArgv}/detail/index.less创建成功`);
               },
             );
           });
@@ -171,32 +189,44 @@ const doneWithFn = (res) => {
   }
   fs.readFile(resolve(__dirname, '../../src/routes.ts'), (err, data) => {
     const dataString = data.toString();
-    if (dataString.indexOf(moduleName) === -1) {
+    if (dataString.indexOf(entityName) === -1) {
+      const temp = ['f', 'w'];
+      let oo;
+      const __ooself = (str) => {
+        oo = {
+          path: str,
+          routes: [],
+        };
+      };
+
+      __ooself('f');
+      console.log('******', oo);
+
       const routeItem = JSON.stringify({
-        path: `/${moduleName}`,
-        code: `${moduleName}`,
+        path: `/${entityName}`,
+        code: `${entityName}`,
         name: `${title}`,
         title: `${title}`,
         routes: [
           {
-            path: `/${moduleName}/list`,
-            code: `${moduleName}-list`,
-            component: `@/pages/${moduleName}/index`,
+            path: `/${entityName}/list`,
+            code: `${entityName}-list`,
+            component: `@/pages/${entityName}/index`,
             name: `${title}-列表`,
             title: `${title}-列表`,
           },
           {
-            path: `/${moduleName}/detail`,
-            code: `${moduleName}-detail`,
-            component: `@/pages/${moduleName}/detail`,
+            path: `/${entityName}/detail`,
+            code: `${entityName}-detail`,
+            component: `@/pages/${entityName}/detail`,
             name: `${title}-详情`,
             hideInMenu: true,
             title: `${title}-详情`,
           },
           {
-            path: `/${moduleName}/form`,
-            code: `${moduleName}-form`,
-            component: `@/pages/${moduleName}/form`,
+            path: `/${entityName}/form`,
+            code: `${entityName}-form`,
+            component: `@/pages/${argv}/form`,
             name: `${title}-表单`,
             hideInMenu: true,
             title: `${title}-表单`,
@@ -214,24 +244,9 @@ const doneWithFn = (res) => {
         resolve(__dirname, '../../src/routes.ts'),
         data,
         function (error) {
-          console.info(`${dirName}/index.tsx创建成功`);
+          console.info(`${argv}/index.tsx创建成功`);
         },
       );
     }
   });
-};
-
-const createDir = (path, cb) => {
-  var pathAry = path.split('/');
-  for (var i = 0; i < pathAry.length; i++) {
-    var curPath = pathAry.slice(0, i + 1).join('/');
-    (function (curPath) {
-      if (!fs.existsSync(curPath)) {
-        fs.mkdir(curPath, function () {
-          console.log(curPath + ' is created!');
-          cb();
-        });
-      }
-    })(curPath);
-  }
 };

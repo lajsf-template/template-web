@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 18:50:18
+ * @LastEditTime: 2021-11-23 16:58:05
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -16,7 +16,7 @@ import { formData, TableColumns, title, btn, requestUrl } from './constants';
 import styles from './index.less';
 import axios from 'axios';
 
-function Users() {
+function moduleName() {
   const history = useHistory();
 
   const [tableData, settableData] = useState([]);
@@ -36,8 +36,16 @@ function Users() {
   const [searchfields, setsearchfields] = useState({});
 
   // 页面挂载触发事件
+  const [windowheight, setwindowheight] = useState(500);
+  const onWindowResize = () => {
+    setwindowheight(window.innerHeight);
+  };
   useEffect(() => {
     initList(pagination);
+    setwindowheight(window.innerHeight);
+    window.onresize = function () {
+      onWindowResize();
+    };
   }, []);
 
   const headers = {
@@ -138,12 +146,6 @@ function Users() {
     history.push('/users/form');
   };
 
-  // 提交表单【包括编辑/或新增】
-  const handleSubmit = (fields) => {
-    console.log('fields--222--', fields);
-    // setisShowModal(false);
-  };
-
   const onSelectChange = (selectedRowKeys) => {
     setselectedRowKeys([...selectedRowKeys]);
   };
@@ -218,7 +220,7 @@ function Users() {
           <p>{modalText}</p>
         </Modal>
         <Search formData={formState} onSearch={handleSearch} />
-        <Row gutter={24}>
+        <Row gutter={24} style={{ marginTop: 5 }}>
           {typeof btn !== 'undefined'
             ? btn.toolbar.map((v, index) => (
                 <Button
@@ -232,7 +234,7 @@ function Users() {
               ))
             : null}
         </Row>
-        <div style={{ marginTop: 10 }}></div>
+        <div style={{ marginTop: 16 }}></div>
         <Table
           rowSelection={{
             type: 'checkbox',
@@ -241,7 +243,7 @@ function Users() {
           columns={TableColumns}
           tableData={tableData}
           pagination={false}
-          scroll={{ x: 1800, y: 420 }}
+          scroll={{ x: 1800, y: windowheight - 360 }}
         />
         <div style={{ paddingTop: 10 }}>
           <Pagination
@@ -264,4 +266,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default moduleName;

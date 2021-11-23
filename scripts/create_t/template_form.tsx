@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 17:51:31
+ * @LastEditTime: 2021-11-23 17:04:56
  */
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
@@ -20,8 +20,8 @@ import {
   Select,
   Radio,
 } from 'antd';
-import { formData, title, requestUrl } from './constants';
-import styles from './form.less';
+import { formData, title, requestUrl } from '../constants';
+import styles from './index.less';
 import axios from 'axios';
 
 function moduleName() {
@@ -72,7 +72,6 @@ function moduleName() {
 
   // 渲染dom
   const getFields = () => {
-    //这是问题？
     const ary = [];
     formData.map((item, index) => {
       const __name = item.field;
@@ -148,7 +147,12 @@ function moduleName() {
           key={index}
           labelAlign="right"
           labelCol={{
-            style: { width: 120, marginRight: 10 },
+            style: {
+              width: 150,
+              marginRight: 10,
+              whiteSpace: 'normal',
+              overflow: 'visible',
+            },
           }}
         >
           {conponents}
@@ -201,10 +205,21 @@ function moduleName() {
         form={form}
         className="ant-advanced-search-form"
         onFinish={onFinish}
-        style={{ padding: '50px 25% 50px 80px' }}
+        style={{ padding: '30px 25% 50px 50px' }}
       >
         {getFields()}
-        <Form.Item labelCol={{ span: 4 }} wrapperCol={{ span: 8, offset: 3 }}>
+        <Form.Item
+          label={'   '}
+          colon={false}
+          labelCol={{
+            style: {
+              width: 150,
+              marginRight: 10,
+              whiteSpace: 'normal',
+              overflow: 'visible',
+            },
+          }}
+        >
           <Button type="primary" htmlType="submit">
             保存
           </Button>
