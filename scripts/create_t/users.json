@@ -44,21 +44,9 @@
         "sort": false,
         "fixed": "left"
       },
-      {
-        "title": "内容",
-        "dataIndex": "content",
-        "key": "content"
-      },
-      {
-        "title": "反馈图片，最多6张",
-        "dataIndex": "image",
-        "key": "image"
-      },
-      {
-        "dataIndex": "createDate",
-        "title": "创建时间",
-        "key": "createDate"
-      },
+      { "title": "内容", "dataIndex": "content", "key": "content" },
+      { "title": "反馈图片，最多6张", "dataIndex": "image", "key": "image" },
+      { "dataIndex": "createDate", "title": "创建时间", "key": "createDate" },
       {
         "dataIndex": "createUserId",
         "title": "创建人",
@@ -76,24 +64,12 @@
   },
   "btn": {
     "toolbar": [
-      {
-        "text": "添加",
-        "fn": "add"
-      },
-      {
-        "text": "删除",
-        "fn": "remove"
-      }
+      { "text": "添加", "fn": "add" },
+      { "text": "删除", "fn": "remove" }
     ],
     "td": [
-      {
-        "text": "查看",
-        "fn": "detail"
-      },
-      {
-        "text": "编辑",
-        "fn": "edit"
-      }
+      { "text": "查看", "fn": "detail" },
+      { "text": "编辑", "fn": "edit" }
     ]
   }
 }

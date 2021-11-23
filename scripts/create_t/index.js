@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 19:15:41
+ * @LastEditTime: 2021-11-23 09:58:03
  */
 const { resolve } = require('path');
 const fs = require('fs');
@@ -14,6 +14,7 @@ const moduleName = process.argv[2];
 
 const reqUrl = `https://www.fastmock.site/mock/e8823b6c0884aa629219855d2ce7f5f9/test/conf`;
 const env = require('./env');
+const { dir } = require('console');
 // 代码模版
 const styleString =
   '.orderAdmin{background-color:white;margin:16px;padding:16px;.title{padding-bottom:16px;font-weight:bold;font-size:16px;line-height:24px;border-bottom:1px solid #f0f1f3}.center{margin-top:16px}}';
@@ -22,18 +23,32 @@ const styleString =
 const dirName = resolve('./src/pages/' + moduleName);
 
 if (fs.existsSync(resolve(__dirname, `./${moduleName}.json`))) {
+  //如果有本地配置文件就读本地配置文件
   fs.readFile(resolve(__dirname, `./${moduleName}.json`), (err, config) => {
     doneWithFn(JSON.parse(config.toString()));
   });
 } else {
-  fs.writeFile(resolve(__dirname, `./${moduleName}.json`), '', (error) => {
-    console.log(`${moduleName}.json文件新建完成`);
-  });
+  // 如果没有本地文件就读接口，请求文件
+  axios
+    .get(reqUrl, {
+      params: {
+        type: moduleName,
+      },
+    })
+    .then((res) => {
+      fs.writeFile(
+        resolve(__dirname, `./${moduleName}.json`),
+        JSON.stringify(res.data),
+        (error) => {
+          console.log(`${moduleName}.json文件新建完成`);
+          doneWithFn(JSON.parse(config.toString()));
+        },
+      );
+    });
 }
 
 const doneWithFn = (res) => {
-  console.log('res---', res);
-  //处理带有函数的字段
+  // 处理带有函数的字段
   const { form, table, title, domain, serviceName, resourceName, btn } = res;
   // 常规请求路由
   const __domain = env[domain.split('.')[1]][domain.split('.')[2]];
@@ -92,10 +107,10 @@ const doneWithFn = (res) => {
         );
         if (!err) {
           fs.writeFile(dirName + `/index.tsx`, data, function (error) {
-            console.info(`${dirName}/index.tsx创建成`);
+            console.info(`${dirName}/index.tsx创建成功`);
           });
           fs.writeFile(dirName + `/index.less`, styleString, function (error) {
-            console.info(`${dirName}/index.less创建成`);
+            console.info(`${dirName}/index.less创建成功`);
           });
         }
       });
@@ -109,11 +124,17 @@ const doneWithFn = (res) => {
             process.argv[2].replace(/^\S/, (s) => s.toUpperCase()) + 'Form',
           );
         if (!err) {
-          fs.writeFile(dirName + `/form.tsx`, data, function (error) {
-            console.info(`${dirName}/form.tsx创建成`);
-          });
-          fs.writeFile(dirName + `/form.less`, styleString, function (error) {
-            console.info(`${dirName}/form.less创建成`);
+          fs.mkdir(dirName + '/form', function () {
+            fs.writeFile(dirName + `/form/index.tsx`, data, function (error) {
+              console.info(`${dirName}/form.tsx创建成功`);
+            });
+            fs.writeFile(
+              dirName + `/form/index.less`,
+              styleString,
+              function (error) {
+                console.info(`${dirName}/form.less创建成功`);
+              },
+            );
           });
         }
       });
@@ -127,11 +148,17 @@ const doneWithFn = (res) => {
             process.argv[2].replace(/^\S/, (s) => s.toUpperCase()) + 'Detail',
           );
         if (!err) {
-          fs.writeFile(dirName + `/detail.tsx`, data, function (error) {
-            console.info(`${dirName}/detail.tsx创建成`);
-          });
-          fs.writeFile(dirName + `/detail.less`, styleString, function (error) {
-            console.info(`${dirName}/detail.less创建成`);
+          fs.mkdir(dirName + '/detail', function () {
+            fs.writeFile(dirName + `/detail/index.tsx`, data, function (error) {
+              console.info(`${dirName}/detail/index.tsx创建成功`);
+            });
+            fs.writeFile(
+              dirName + `/detail/index.less`,
+              styleString,
+              function (error) {
+                console.info(`${dirName}/detail/index.less创建成功`);
+              },
+            );
           });
         }
       });
@@ -187,7 +214,7 @@ const doneWithFn = (res) => {
         resolve(__dirname, '../../src/routes.ts'),
         data,
         function (error) {
-          console.info(`${dirName}/index.tsx创建成`);
+          console.info(`${dirName}/index.tsx创建成功`);
         },
       );
     }
