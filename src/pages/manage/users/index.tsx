@@ -5,14 +5,21 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-23 16:58:05
+ * @LastEditTime: 2021-11-23 20:07:06
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Row, Button, Pagination, message, Modal } from 'antd';
 import Table from '@/components/table';
 import Search from '@/components/search';
-import { formData, TableColumns, title, btn, requestUrl } from './constants';
+import {
+  argv,
+  formData,
+  TableColumns,
+  title,
+  btn,
+  requestUrl,
+} from './constants';
 import styles from './index.less';
 import axios from 'axios';
 
@@ -129,21 +136,21 @@ function moduleName() {
 
   // 编辑
   const onedit = (kid: any, type) => {
-    history.push('/users/form', {
+    history.push(`/${argv}/form`, {
       kid,
     });
   };
 
   // 查看
   const ondetail = (kid: any) => {
-    history.push('/users/detail', {
+    history.push(`/${argv}/detail`, {
       kid,
     });
   };
 
   // 新增
   const onadd = () => {
-    history.push('/users/form');
+    history.push(`/${argv}/form`);
   };
 
   const onSelectChange = (selectedRowKeys) => {

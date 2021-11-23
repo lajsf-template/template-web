@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-23 19:47:27
+ * @LastEditTime: 2021-11-23 20:30:46
  */
 const path = require('path');
 const colors = require('colors');
@@ -22,7 +22,14 @@ const entityName = doneArgv[doneArgv.length - 1];
 // 代码模版
 const styleString =
   '.orderAdmin{background-color:white;margin:16px;padding:16px;.title{padding-bottom:16px;font-weight:bold;font-size:16px;line-height:24px;border-bottom:1px solid #f0f1f3}.center{margin-top:16px}} /deep/.ant-form-item-label{overflow: visible !important;}';
-if (argv.indexOf('/') === -1 || doneArgv.length !== 2) {
+if (
+  argv.length < 3 ||
+  argv.indexOf('/') === -1 ||
+  argv[argv.length - 1] === '/' ||
+  !/^[a-zA-Z]+$/.test(doneArgv[doneArgv.length - 1]) ||
+  !/^[a-zA-Z]+$/.test(doneArgv[0]) ||
+  doneArgv.length !== 2
+) {
   console.error('命令参数不正确，请修正！'.red);
   return;
 }
@@ -67,7 +74,6 @@ const doneWithFn = (res) => {
   const detailUrl = `${baseUrl}/action/detail`;
   const listUrl = `${baseUrl}/action/list-page`;
   const removeUrl = `${baseUrl}/action/batch-update`;
-
   const data =
     'export const formData = ' +
     JSON.stringify(form) +
@@ -89,6 +95,10 @@ const doneWithFn = (res) => {
     ';' +
     'export const resourceName = ' +
     JSON.stringify(resourceName) +
+    ';' +
+    ';' +
+    'export const argv = ' +
+    JSON.stringify(argv) +
     ';' +
     'export const requestUrl = ' +
     JSON.stringify({
@@ -273,7 +283,15 @@ const doneWithFn = (res) => {
       jsonRoute.map((v) => {
         if (v.name === doneArgv[0]) {
           // 如果目录存在并且之前没有页面新建,这个暂时不判断了
-          v.routes = [...v.routes, ...item];
+          let subCotains = false;
+          v.routes.map((m) => {
+            if (m.name.indexOf(entityName) > -1) {
+              subCotains = true;
+            }
+          });
+          if (!subCotains) {
+            v.routes = [...v.routes, ...item];
+          }
         }
       });
     }

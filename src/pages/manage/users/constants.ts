@@ -61,6 +61,7 @@ export const title = '用户';
 export const domain = 'https://api-dev.yryz.com/gateway/';
 export const serviceName = '/yangshan-business/v1.0';
 export const resourceName = 'feedback-infos';
+export const argv = 'manage/users';
 export const requestUrl = {
   addUrl:
     'https://api-dev.yryz.com/gateway//yangshan-business/v1.0/pv/feedback-infos/action/create',
