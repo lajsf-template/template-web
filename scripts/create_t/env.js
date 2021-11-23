@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 15:45:59
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-22 17:40:58
+ * @LastEditTime: 2021-11-23 20:37:25
  */
 module.exports = {
   systemName: '平台支撑后台',
@@ -13,7 +13,7 @@ module.exports = {
   contextPath: '/',
   enableMessageBox: false,
   api: {
-    domain: 'https://api-dev.yryz.com/gateway/',
+    domain: 'https://api-dev.yryz.com/gateway',
     service: {
       support: '/platform-support/v1.0',
       pay: '/platform-pay/v1.0',

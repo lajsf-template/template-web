@@ -1,3 +1,12 @@
+/*
+ * @Description:
+ * @Version: 2.0
+ * @Autor: zhanghang
+ * @Email: suchiva@126.com
+ * @Date: 2021-11-23 20:33:43
+ * @LastEditors: zhanghang
+ * @LastEditTime: 2021-11-23 20:37:46
+ */
 export const formData = [
   {
     label: '主键ID',
@@ -58,19 +67,19 @@ export const btn = {
   ],
 };
 export const title = '用户';
-export const domain = 'https://api-dev.yryz.com/gateway/';
+export const domain = 'https://api-dev.yryz.com/gateway';
 export const serviceName = '/yangshan-business/v1.0';
 export const resourceName = 'feedback-infos';
 export const argv = 'manage/users';
 export const requestUrl = {
   addUrl:
-    'https://api-dev.yryz.com/gateway//yangshan-business/v1.0/pv/feedback-infos/action/create',
+    'https://api-dev.yryz.com/gateway/yangshan-business/v1.0/pv/feedback-infos/action/create',
   editUrl:
-    'https://api-dev.yryz.com/gateway//yangshan-business/v1.0/pv/feedback-infos/action/update',
+    'https://api-dev.yryz.com/gateway/yangshan-business/v1.0/pv/feedback-infos/action/update',
   detailUrl:
-    'https://api-dev.yryz.com/gateway//yangshan-business/v1.0/pv/feedback-infos/action/detail',
+    'https://api-dev.yryz.com/gateway/yangshan-business/v1.0/pv/feedback-infos/action/detail',
   listUrl:
-    'https://api-dev.yryz.com/gateway//yangshan-business/v1.0/pv/feedback-infos/action/list-page',
+    'https://api-dev.yryz.com/gateway/yangshan-business/v1.0/pv/feedback-infos/action/list-page',
   removeUrl:
-    'https://api-dev.yryz.com/gateway//yangshan-business/v1.0/pv/feedback-infos/action/batch-update',
+    'https://api-dev.yryz.com/gateway/yangshan-business/v1.0/pv/feedback-infos/action/batch-update',
 };
