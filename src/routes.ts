@@ -1,19 +1,11 @@
-/*
- * @Description:
- * @Version: 2.0
- * @Autor: zhanghang
- * @Email: suchiva@126.com
- * @Date: 2021-11-16 09:28:37
- * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-23 15:04:33
- */
 export default [
   {
     path: '/login',
     component: '@/pages/login/index',
-    headerRender: false, // 不展示顶栏
-    footerRender: false, // 不展示页脚
-    menuRender: false, // 不展示菜单
+    headerRender: false,
+    footerRender: false,
+    menuRender: false,
+    name: 'login',
   },
   {
     path: '/demo',
@@ -46,31 +38,31 @@ export default [
     ],
   },
   {
-    path: '/users',
-    code: 'users',
-    name: '用户',
-    title: '用户',
+    path: '/manange',
+    code: 'manange',
+    name: 'manange',
+    title: 'manange',
     routes: [
       {
-        path: '/users/list',
+        path: '/manange/users',
         code: 'users-list',
-        component: '@/pages/users/index',
-        name: '用户-列表',
+        component: '@/pages/manange/users/index',
+        name: 'users-列表',
         title: '用户-列表',
       },
       {
-        path: '/users/detail',
+        path: '/manange/users/detail',
         code: 'users-detail',
-        component: '@/pages/users/detail',
-        name: '用户-详情',
+        component: '@/pages/manange/users/detail',
+        name: 'users-详情',
         hideInMenu: true,
         title: '用户-详情',
       },
       {
-        path: '/users/form',
+        path: '/manange/users/form',
         code: 'users-form',
-        component: '@/pages/users/form',
-        name: '用户-表单',
+        component: '@/pages/manange/users/form',
+        name: 'users-表单',
         hideInMenu: true,
         title: '用户-表单',
       },
