@@ -8,7 +8,8 @@ export default defineConfig({
   layout: {
     name: 'template-web',
     locale: true,
-    layout: 'side',
+    layout: 'mix',
+    splitMenus: true,
   },
   routes: routes,
   fastRefresh: {},

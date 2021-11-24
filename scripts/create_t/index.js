@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-23 20:30:46
+ * @LastEditTime: 2021-11-24 15:27:50
  */
 const path = require('path');
 const colors = require('colors');
@@ -16,20 +16,28 @@ const argv = process.argv[2];
 
 const reqUrl = `https://www.fastmock.site/mock/e8823b6c0884aa629219855d2ce7f5f9/test/conf`;
 const env = require('./env');
-const { mkdirsSync } = require('fs-extra');
 const doneArgv = argv.split('/');
+const isLeveleThree = doneArgv.length === 3; // 是否支持3层路由/目录
 const entityName = doneArgv[doneArgv.length - 1];
 // 代码模版
 const styleString =
   '.orderAdmin{background-color:white;margin:16px;padding:16px;.title{padding-bottom:16px;font-weight:bold;font-size:16px;line-height:24px;border-bottom:1px solid #f0f1f3}.center{margin-top:16px}} /deep/.ant-form-item-label{overflow: visible !important;}';
-if (
-  argv.length < 3 ||
-  argv.indexOf('/') === -1 ||
-  argv[argv.length - 1] === '/' ||
-  !/^[a-zA-Z]+$/.test(doneArgv[doneArgv.length - 1]) ||
-  !/^[a-zA-Z]+$/.test(doneArgv[0]) ||
-  doneArgv.length !== 2
-) {
+const isParamsWrong = () => {
+  let isWrong =
+    argv.length < 3 ||
+    argv.indexOf('/') === -1 ||
+    argv[argv.length - 1] === '/' ||
+    !/^[a-zA-Z]+$/.test(doneArgv[doneArgv.length - 1]) ||
+    !/^[a-zA-Z]+$/.test(doneArgv[0]) ||
+    (doneArgv.length !== 2 && doneArgv.length !== 3);
+  // 判断是否是英文字母，如果不是，抛出
+  doneArgv.map((v) => {
+    if (!/^[a-zA-Z]+$/.test(v)) isWrong = true;
+  });
+
+  return isWrong;
+};
+if (isParamsWrong()) {
   console.error('命令参数不正确，请修正！'.red);
   return;
 }
@@ -200,14 +208,28 @@ const doneWithFn = (res) => {
     return soure.slice(0, start) + `,${newStr}` + soure.slice(start);
   }
   function arryCotains(ary, filed, str) {
-    let boolean = false;
-    ary.map((v) => {
+    let obj = {
+      boolean: false,
+      item: {},
+    };
+    ary.map((v, index) => {
       if (v[filed] === str) {
-        // 如果目录存在并且之前没有页面新建,这个暂时不判断了
-        boolean = true;
+        obj.boolean = true;
+        obj.item = v;
+        obj.index = index;
+      } else {
+        if (v.routes && v.routes.length > 0) {
+          v.routes.map((m, _index) => {
+            if (m[filed] === str) {
+              obj.boolean = true;
+              obj.item = v;
+              obj.index = index + '_' + _index;
+            }
+          });
+        }
       }
     });
-    return boolean;
+    return obj;
   }
   fs.readFile(resolve(__dirname, '../../src/routes.ts'), (err, data) => {
     const dataString = data.toString().trim();
@@ -215,25 +237,183 @@ const doneWithFn = (res) => {
     let jsonRoute = eval(
       '(' + dataString.substring(aryIndex, dataString.length - 1) + ')',
     );
-
-    if (!arryCotains(jsonRoute, 'name', doneArgv[0])) {
-      // 如果没有的当前模块
-      const routeItem = [
-        {
-          path: `/${doneArgv[0]}`,
-          code: `${doneArgv[0]}`,
-          name: `${doneArgv[0]}`,
-          title: `${doneArgv[0]}`,
-          routes: [
+    doneArgv.map((v, index) => {
+      if (index !== doneArgv.length - 1) {
+      }
+    });
+    const insertRoute = (jsonRoute, leveName) => {
+      if (isLeveleThree) {
+        // 如果是创建三层目录， 目前仅支持小于3层目录，如果需要更多支持，另行设计
+        let routeItem = [];
+        if (!arryCotains(jsonRoute, 'name', doneArgv[0]).boolean) {
+          // 如果该目录没有，直接在第一级创建
+          routeItem = [
             {
-              path: `/${doneArgv[0]}/${entityName}`,
+              path: `/${doneArgv[0]}`,
+              code: `${doneArgv[0]}`,
+              name: `${doneArgv[0]}`,
+              title: `${doneArgv[0]}`,
+              routes: [
+                {
+                  path: `${doneArgv[1]}`,
+                  code: `${doneArgv[1]}`,
+                  name: `${doneArgv[1]}`,
+                  title: `${doneArgv[1]}`,
+                  routes: [
+                    {
+                      path: `${entityName}`,
+                      code: `${entityName}-list`,
+                      component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/index`,
+                      name: `${entityName}-列表`,
+                      title: `${title}-列表`,
+                    },
+                    {
+                      path: `${entityName}/detail`,
+                      code: `${entityName}-detail`,
+                      component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/detail`,
+                      name: `${entityName}-详情`,
+                      hideInMenu: true,
+                      title: `${title}-详情`,
+                    },
+                    {
+                      path: `${entityName}/form`,
+                      code: `${entityName}-form`,
+                      component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/form`,
+                      name: `${entityName}-表单`,
+                      hideInMenu: true,
+                      title: `${title}-表单`,
+                    },
+                  ],
+                },
+              ],
+            },
+          ];
+          jsonRoute = [...jsonRoute, ...routeItem];
+        } else {
+          // 如果目录存在，那就读取相关信息
+          const positionDetails_0 = arryCotains(jsonRoute, 'name', doneArgv[0]);
+          if (!positionDetails_0.boolean) {
+            // 一级目录有，就找第二级目录，如果没有，就直接创建
+            const __item = {
+              path: `${doneArgv[1]}`,
+              code: `${doneArgv[1]}`,
+              name: `${doneArgv[1]}`,
+              title: `${doneArgv[1]}`,
+              routes: [
+                {
+                  path: `${entityName}`,
+                  code: `${entityName}-list`,
+                  component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/index`,
+                  name: `${entityName}-列表`,
+                  title: `${title}-列表`,
+                },
+                {
+                  path: `${entityName}/detail`,
+                  code: `${entityName}-detail`,
+                  component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/detail`,
+                  name: `${entityName}-详情`,
+                  hideInMenu: true,
+                  title: `${title}-详情`,
+                },
+                {
+                  path: `${entityName}/form`,
+                  code: `${entityName}-form`,
+                  component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/form`,
+                  name: `${entityName}-表单`,
+                  hideInMenu: true,
+                  title: `${title}-表单`,
+                },
+              ],
+            };
+            jsonRoute.splice(positionDetails.index, 0, __item);
+          } else {
+            const positionDetails_1 = arryCotains(
+              jsonRoute,
+              'name',
+              doneArgv[1],
+            );
+            const __item = [
+              {
+                path: `${entityName}`,
+                code: `${entityName}-list`,
+                component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/index`,
+                name: `${entityName}-列表`,
+                title: `${title}-列表`,
+              },
+              {
+                path: `${entityName}/detail`,
+                code: `${entityName}-detail`,
+                component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/detail`,
+                name: `${entityName}-详情`,
+                hideInMenu: true,
+                title: `${title}-详情`,
+              },
+              {
+                path: `${entityName}/form`,
+                code: `${entityName}-form`,
+                component: `@/pages/${doneArgv[0]}/${doneArgv[1]}/${entityName}/form`,
+                name: `${entityName}-表单`,
+                hideInMenu: true,
+                title: `${title}-表单`,
+              },
+            ];
+            const __indexPosi = positionDetails_1.index.split('_');
+            jsonRoute[__indexPosi[0]].routes[__indexPosi[1]].routes.push(
+              ...__item,
+            );
+          }
+        }
+      } else {
+        // 创建两层路由
+        if (!arryCotains(jsonRoute, 'name', doneArgv[0]).boolean) {
+          //第一层目录判断
+          // 如果没有的当前模块
+          const routeItem = [
+            {
+              path: `/${doneArgv[0]}`,
+              code: `${doneArgv[0]}`,
+              name: `${doneArgv[0]}`,
+              title: `${doneArgv[0]}`,
+              routes: [
+                {
+                  path: `${entityName}`,
+                  code: `${entityName}-list`,
+                  component: `@/pages/${doneArgv[0]}/${entityName}/index`,
+                  name: `${entityName}-列表`,
+                  title: `${title}-列表`,
+                },
+                {
+                  path: `${entityName}/detail`,
+                  code: `${entityName}-detail`,
+                  component: `@/pages/${doneArgv[0]}/${entityName}/detail`,
+                  name: `${entityName}-详情`,
+                  hideInMenu: true,
+                  title: `${title}-详情`,
+                },
+                {
+                  path: `${entityName}/form`,
+                  code: `${entityName}-form`,
+                  component: `@/pages/${doneArgv[0]}/${entityName}/form`,
+                  name: `${entityName}-表单`,
+                  hideInMenu: true,
+                  title: `${title}-表单`,
+                },
+              ],
+            },
+          ];
+          jsonRoute = [...jsonRoute, ...routeItem];
+        } else {
+          // 如果有当前模块，直接追加
+          const item = [
+            {
+              path: `${entityName}`,
               code: `${entityName}-list`,
               component: `@/pages/${doneArgv[0]}/${entityName}/index`,
               name: `${entityName}-列表`,
               title: `${title}-列表`,
             },
             {
-              path: `/${doneArgv[0]}/${entityName}/detail`,
+              path: `${entityName}/detail`,
               code: `${entityName}-detail`,
               component: `@/pages/${doneArgv[0]}/${entityName}/detail`,
               name: `${entityName}-详情`,
@@ -241,60 +421,38 @@ const doneWithFn = (res) => {
               title: `${title}-详情`,
             },
             {
-              path: `/${doneArgv[0]}/${entityName}/form`,
+              path: `${entityName}/form`,
               code: `${entityName}-form`,
               component: `@/pages/${doneArgv[0]}/${entityName}/form`,
               name: `${entityName}-表单`,
               hideInMenu: true,
               title: `${title}-表单`,
             },
-          ],
-        },
-      ];
-      jsonRoute = [...jsonRoute, ...routeItem];
-    } else {
-      // 如果有当前模块，直接追加
-
-      const item = [
-        {
-          path: `/${doneArgv[0]}/${entityName}`,
-          code: `${entityName}-list`,
-          component: `@/pages/${doneArgv[0]}/${entityName}/index`,
-          name: `${entityName}-列表`,
-          title: `${title}-列表`,
-        },
-        {
-          path: `/${doneArgv[0]}/${entityName}/detail`,
-          code: `${entityName}-detail`,
-          component: `@/pages/${doneArgv[0]}/${entityName}/detail`,
-          name: `${entityName}-详情`,
-          hideInMenu: true,
-          title: `${title}-详情`,
-        },
-        {
-          path: `/${doneArgv[0]}/${entityName}/form`,
-          code: `${entityName}-form`,
-          component: `@/pages/${doneArgv[0]}/${entityName}/form`,
-          name: `${entityName}-表单`,
-          hideInMenu: true,
-          title: `${title}-表单`,
-        },
-      ];
-      jsonRoute.map((v) => {
-        if (v.name === doneArgv[0]) {
-          // 如果目录存在并且之前没有页面新建,这个暂时不判断了
-          let subCotains = false;
-          v.routes.map((m) => {
-            if (m.name.indexOf(entityName) > -1) {
-              subCotains = true;
+          ];
+          jsonRoute.map((v) => {
+            if (v.name === doneArgv[0]) {
+              // 如果是
+              // 如果目录存在并且之前没有页面新建,
+              let subCotains = false;
+              v.routes.map((m) => {
+                if (m.name.indexOf(entityName) > -1) {
+                  subCotains = true;
+                }
+              });
+              if (!subCotains) {
+                v.routes = [...v.routes, ...item];
+              }
             }
           });
-          if (!subCotains) {
-            v.routes = [...v.routes, ...item];
-          }
         }
-      });
-    }
+      }
+
+      return jsonRoute;
+    };
+
+    jsonRoute = insertRoute(jsonRoute);
+    // return;
+
     data = 'export default ' + JSON.stringify(jsonRoute) + ';';
 
     if (!err) {
