@@ -1,11 +1,11 @@
 /*
- * @Description:
+ * @Description: 生成模版入口文件
  * @Version: 2.0
  * @Autor: zhanghang
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-24 16:54:10
+ * @LastEditTime: 2021-11-24 17:20:56
  */
 const colors = require('colors');
 const fs = require('fs');
@@ -13,7 +13,6 @@ const axios = require('axios');
 const argv = process.argv[2];
 const doneArgv = argv.split('/');
 
-// 基本配置也包括也涉及相关方法
 const {
   configJsonReqUrl,
   styleString,

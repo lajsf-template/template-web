@@ -1,11 +1,11 @@
 /*
- * @Description:
+ * @Description: 详情页面
  * @Version: 2.0
  * @Autor: zhanghang
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-23 17:03:08
+ * @LastEditTime: 2021-11-24 17:21:32
  */
 import { useEffect, useRef, useState } from 'react';
 import { Row, Col } from 'antd';

@@ -1,11 +1,11 @@
 /*
- * @Description:
+ * @Description: 基本配置也包括也涉及相关方法
  * @Version: 2.0
  * @Autor: zhanghang
  * @Email: suchiva@126.com
  * @Date: 2021-11-24 15:55:01
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-24 16:53:02
+ * @LastEditTime: 2021-11-24 17:21:06
  */
 const fs = require('fs');
 const path = require('path');
