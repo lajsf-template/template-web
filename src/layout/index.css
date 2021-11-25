@@ -1,0 +1,7 @@
+.main-inner {
+  min-height: calc(100vh - 140px);
+  margin: 88px 40px;
+  margin: 20px;
+  padding: 16px;
+  background-color: #ffffff;
+}

@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-24 13:56:50
+ * @LastEditTime: 2021-11-25 09:23:25
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -82,7 +82,6 @@ function moduleName() {
         },
       )
       .then((res) => {
-        console.log('res----', res);
         if (res.data.status) {
           settableData(res.data.data.entities);
           setpagination({

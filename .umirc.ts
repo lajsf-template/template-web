@@ -5,12 +5,7 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  layout: {
-    name: 'template-web',
-    locale: true,
-    layout: 'mix',
-    splitMenus: true,
-  },
+  layout: false,
   routes: routes,
   fastRefresh: {},
 });

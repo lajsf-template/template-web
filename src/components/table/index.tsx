@@ -75,7 +75,6 @@ function TableSearch<T = any>(
   useEffect(() => {
     if (Array.isArray(tableData)) {
       setDataSource(tableData as []);
-      console.log('tableData-----', tableData);
     }
   }, [tableData]);
 
