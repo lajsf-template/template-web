@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-24 15:55:01
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-24 17:21:06
+ * @LastEditTime: 2021-11-25 18:48:00
  */
 const fs = require('fs');
 const path = require('path');
@@ -85,6 +85,10 @@ const firstLevelRouteItemLe3 = (doneArgv, entityName, title) => [
     name: `${doneArgv[0]}`,
     title: `${doneArgv[0]}`,
     routes: [
+      {
+        path: `/${doneArgv[0]}`,
+        redirect: `/${doneArgv[0]}/${doneArgv[1]}/${doneArgv[2]}`,
+      },
       {
         path: `${doneArgv[1]}`,
         code: `${doneArgv[1]}`,
@@ -187,6 +191,10 @@ const firstLevelRouteItemLe2 = (doneArgv, entityName, title) => [
     title: `${doneArgv[0]}`,
     routes: [
       {
+        path: `/${doneArgv[0]}`,
+        redirect: `/${doneArgv[0]}/${entityName}`,
+      },
+      {
         path: `${entityName}`,
         code: `${entityName}-list`,
         component: `@/pages/${doneArgv[0]}/${entityName}/index`,
@@ -213,31 +221,37 @@ const firstLevelRouteItemLe2 = (doneArgv, entityName, title) => [
   },
 ];
 
-const secondLevelRouteItemLe2 = (doneArgv, entityName, title) => [
-  {
-    path: `${entityName}`,
-    code: `${entityName}-list`,
-    component: `@/pages/${doneArgv[0]}/${entityName}/index`,
-    name: `${entityName}-列表`,
-    title: `${title}-列表`,
-  },
-  {
-    path: `${entityName}/detail`,
-    code: `${entityName}-detail`,
-    component: `@/pages/${doneArgv[0]}/${entityName}/detail`,
-    name: `${entityName}-详情`,
-    hideInMenu: true,
-    title: `${title}-详情`,
-  },
-  {
-    path: `${entityName}/form`,
-    code: `${entityName}-form`,
-    component: `@/pages/${doneArgv[0]}/${entityName}/form`,
-    name: `${entityName}-表单`,
-    hideInMenu: true,
-    title: `${title}-表单`,
-  },
-];
+const secondLevelRouteItemLe2 = (doneArgv, entityName, title) => {
+  return [
+    {
+      path: `/${doneArgv[0]}`,
+      redirect: `/${doneArgv[0]}/${entityName}`,
+    },
+    {
+      path: `${entityName}`,
+      code: `${entityName}-list`,
+      component: `@/pages/${doneArgv[0]}/${entityName}/index`,
+      name: `${entityName}-列表`,
+      title: `${title}-列表`,
+    },
+    {
+      path: `${entityName}/detail`,
+      code: `${entityName}-detail`,
+      component: `@/pages/${doneArgv[0]}/${entityName}/detail`,
+      name: `${entityName}-详情`,
+      hideInMenu: true,
+      title: `${title}-详情`,
+    },
+    {
+      path: `${entityName}/form`,
+      code: `${entityName}-form`,
+      component: `@/pages/${doneArgv[0]}/${entityName}/form`,
+      name: `${entityName}-表单`,
+      hideInMenu: true,
+      title: `${title}-表单`,
+    },
+  ];
+};
 
 const fileResolve = (str) => resolve(__dirname, str);
 
@@ -310,5 +324,6 @@ module.exports = {
   secondLevelRouteItemLe3,
   thirdLevelRouteItemLe3,
   firstLevelRouteItemLe2,
+  secondLevelRouteItemLe2,
   assembleConstants,
 };

@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-24 17:20:56
+ * @LastEditTime: 2021-11-25 18:48:46
  */
 const colors = require('colors');
 const fs = require('fs');
@@ -175,29 +175,37 @@ const doneWithFn = (res) => {
         if (!arryContains(jsonRoute, 'name', doneArgv[0]).boolean) {
           // 如果该目录没有，直接在第一级创建
           routeItem = firstLevelRouteItemLe3(doneArgv, entityName, title);
-          jsonRoute = [...jsonRoute, ...routeItem];
+          if (jsonRoute[0].routes.length === 0) {
+            const temp = {
+              path: '/',
+              redirect: `/${doneArgv[0]}/${doneArgv[1]}/${doneArgv[2]}`,
+            };
+            jsonRoute[0].routes.push(temp, ...routeItem);
+          } else {
+            jsonRoute[0].routes.push(...routeItem);
+          }
         } else {
           // 如果目录存在，那就读取相关信息
           const positionDetails_0 = arryContains(
-            jsonRoute,
+            jsonRoute[0].routes,
             'name',
             doneArgv[0],
           );
           if (!positionDetails_0.boolean) {
             // 一级目录有，就找第二级目录，如果没有，就直接创建
             const __item = secondLevelRouteItemLe3(doneArgv, entityName, title);
-            jsonRoute.splice(positionDetails.index, 0, __item);
+            jsonRoute[0].routes.splice(positionDetails.index, 0, __item);
           } else {
             const positionDetails_1 = arryContains(
-              jsonRoute,
+              jsonRoute[0].routes,
               'name',
               doneArgv[1],
             );
             const __item = thirdLevelRouteItemLe3(doneArgv, entityName, title);
             const __indexPosi = positionDetails_1.index.split('_');
-            jsonRoute[__indexPosi[0]].routes[__indexPosi[1]].routes.push(
-              ...__item,
-            );
+            jsonRoute[0].routes[__indexPosi[0]].routes[
+              __indexPosi[1]
+            ].routes.push(...__item);
           }
         }
       } else {
@@ -206,17 +214,25 @@ const doneWithFn = (res) => {
           //第一层目录判断
           // 如果没有的当前模块
           const routeItem = firstLevelRouteItemLe2(doneArgv, entityName, title);
-          jsonRoute = [...jsonRoute, ...routeItem];
+          if (jsonRoute[0].routes.length === 0) {
+            const temp = {
+              path: '/',
+              redirect: `/${doneArgv[0]}/${doneArgv[1]}`,
+            };
+            jsonRoute[0].routes.push(temp, ...routeItem);
+          } else {
+            jsonRoute[0].routes.push(...routeItem);
+          }
         } else {
           // 如果有当前模块，直接追加
           const item = secondLevelRouteItemLe2(doneArgv, entityName, title);
-          jsonRoute.map((v) => {
+          jsonRoute[0].routes.map((v) => {
             if (v.name === doneArgv[0]) {
               // 如果是
               // 如果目录存在并且之前没有页面新建,
               let subCotains = false;
               v.routes.map((m) => {
-                if (m.name.indexOf(entityName) > -1) {
+                if (m.name === doneArgv[0]) {
                   subCotains = true;
                 }
               });
