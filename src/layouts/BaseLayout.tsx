@@ -7,7 +7,7 @@ import ProLayout, { DefaultFooter } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'umi';
 import { useHistory } from 'react-router';
-import { Tabs } from 'antd';
+import { Tabs, Breadcrumb } from 'antd';
 
 const { TabPane } = Tabs;
 
@@ -48,12 +48,19 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const [activeKey, setactiveKey] = useState<any>(
     pathname.replace(/\//g, '-').substring(1, pathname.length),
   );
+
+  const [title, setTitle] = useState([...document.title.split('/')]);
+
+  // 切换
   const onChange = (activeKey: any) => {
-    setactiveKey(activeKey);
-    history.push('/' + activeKey.replace(/\-/g, '/'));
+    const __activeKey = activeKey.substring(0, activeKey.length - 2);
+    setactiveKey(__activeKey);
+    console.log(activeKey);
+    console.log(__activeKey);
+    history.push('/' + __activeKey.replace(/\-/g, '/'));
   };
 
-  // 添加路由
+  // 添加
   const add = (item: {
     title: string;
     content: string;
@@ -61,36 +68,40 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     closable: boolean;
   }) => {
     const __pathname = history.location.pathname;
-    let __activeKey = __pathname
-      .replace(/\//g, '-')
-      .substring(1, __pathname.length);
+    let __activeKey = document.title.replace(/\//g, '-');
     const newPanes = [...panels];
 
     newPanes.push(item);
-
     setpanels(newPanes);
     setactiveKey(__activeKey);
   };
-  // 删除路由
+  // 删除
   const remove = (targetKey: string) => {
     const tempAry = [...tabPageAry];
     const removeIndex = tabPageAry.indexOf(targetKey);
     const newPanes = [...panels];
-
-    console.log('newPanes---111-', newPanes);
-
-    console.log('tempAry---111-', tempAry);
+    console.log('removeIndex-----', removeIndex);
+    console.log('tempAry----', tempAry);
+    console.log('newPanes----', newPanes);
 
     if (removeIndex > -1) {
       //如果有路由
       tempAry.splice(removeIndex, 1);
       newPanes.splice(removeIndex, 1);
     }
-    console.log('tempAry---22-', tempAry);
-    setpanels(newPanes);
+    console.log('tempAry--2222--', tempAry);
+    console.log('newPanes--2222--', newPanes);
+
+    setpanels([...newPanes]);
     setactiveKey(newPanes[newPanes.length - 1]);
     setTabPageAry([...tempAry]);
-    history.push('/' + newPanes[newPanes.length - 1].key.replace(/\-/g, '/'));
+    const ___newPanelsKey = newPanes[newPanes.length - 1].key;
+    history.push(
+      '/' +
+        ___newPanelsKey
+          .substring(0, ___newPanelsKey.length - 2)
+          .replace(/\-/g, '/'),
+    );
   };
 
   // 编辑
@@ -106,21 +117,20 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     setwindowheight(window.innerHeight);
   };
 
-  useEffect(() => {
-    setwindowheight(window.innerHeight);
-    window.onresize = function () {
-      onWindowResize();
-    };
-  }, []);
-
   const [tabPageAry, setTabPageAry] = useState([]);
-  useEffect(() => {
-    const __pathname = history.location.pathname;
-    const __activeKey = __pathname
-      .replace(/\//g, '-')
-      .substring(1, __pathname.length);
 
-    console.log('__activeKey----', __activeKey);
+  useEffect(() => {
+    // setTitle([...document.title.split('/')])
+    testFn(document.title);
+  }, [history.location.pathname]);
+
+  const testFn = (title) => {
+    const __pathname = history.location.pathname;
+    const __activeKey = title.replace(/\//g, '-');
+
+    const __title = title.replace(/\//g, '-').split('-');
+    setTitle([...__title]);
+
     if (tabPageAry.indexOf(__activeKey) === -1) {
       // 如果是新路由，则加入路由
       if (__activeKey.split('-').length >= 2) {
@@ -128,7 +138,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         setTabPageAry([...tabPageAry, __activeKey]);
         setTimeout(() => {
           add({
-            title: `${document.title}`,
+            title: `${__title[__title.length - 1]}`,
             content: `${__activeKey}`,
             key: __activeKey,
             closable: false,
@@ -137,11 +147,18 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       } else {
         // 如果是目录，就默认加载子页面
         // history.push()
-        console.log('__pathname---', __pathname);
       }
     }
     setactiveKey(__activeKey);
-  }, [history.location.pathname]);
+  };
+
+  // 加载页面
+  useEffect(() => {
+    setwindowheight(window.innerHeight);
+    window.onresize = function () {
+      onWindowResize();
+    };
+  }, []);
 
   return (
     <ProLayout
@@ -177,9 +194,20 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         onEdit={edit}
       >
         {panels.map((pane) => (
-          <TabPane tab={pane.title} key={pane.key} closable={true}></TabPane>
+          <TabPane
+            tab={pane.title}
+            key={pane.key}
+            closable={true}
+            style={{ display: 'none' }}
+          ></TabPane>
         ))}
       </Tabs>
+      <Breadcrumb>
+        <Breadcrumb.Item>首页</Breadcrumb.Item>
+        <Breadcrumb.Item>{title[title.length - 3]}</Breadcrumb.Item>
+        <Breadcrumb.Item>{title[title.length - 2]}</Breadcrumb.Item>
+        <Breadcrumb.Item>{title[title.length - 1]}</Breadcrumb.Item>
+      </Breadcrumb>
       <div style={{ height: windowheight - 200 }}>{children}</div>
     </ProLayout>
   );

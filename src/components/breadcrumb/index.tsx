@@ -12,6 +12,7 @@ function BreadCrumbComponent(props: any) {
   let { pathname } = useLocation();
   const { routes } = getLoginInfo();
   const [breads, setBreads] = useState([]);
+  console.log('getLoginInfo----', getLoginInfo());
   if (!routes) {
     return null;
   }

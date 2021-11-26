@@ -13,7 +13,7 @@ const Login = () => {
         style={{ marginLeft: 8 }}
         onClick={async () => {
           login({ isLogin: true });
-          history.push('/demo');
+          history.push('/');
           window.location.reload();
         }}
       >
