@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-12-02 15:36:33
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-12-02 16:09:29
+ * @LastEditTime: 2021-12-02 18:04:51
  */
 export const navMap: any = {
   sysManager: '系统管理',
@@ -16,4 +16,5 @@ export const navMap: any = {
   feedback: '反馈列表',
   form: '表单',
   detail: '详情',
+  login: '登录页',
 };

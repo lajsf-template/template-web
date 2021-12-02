@@ -5,13 +5,15 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-25 09:21:40
+ * @LastEditTime: 2021-12-02 18:03:17
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Row, Button, Pagination, message, Modal } from 'antd';
-import Table from '@/components/table';
-import Search from '@/components/search';
+// import Table from '@/components/table';
+// import Search from '@/components/search';
+import { Table, Search } from 'ydk-web';
+
 import {
   argv,
   formData,
