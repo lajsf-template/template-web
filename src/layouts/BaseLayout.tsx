@@ -49,8 +49,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     pathname.replace(/\//g, '-').substring(1, pathname.length),
   );
 
-  const [title, setTitle] = useState([...document.title.split('/')]);
-
+  const [title, setTitle] = useState([...pathname.split('/')]);
+  console.log('pathname---------->', pathname);
   // 切换
   const onChange = (activeKey: any) => {
     const __activeKey = activeKey.substring(0, activeKey.length - 2);
@@ -68,7 +68,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     closable: boolean;
   }) => {
     const __pathname = history.location.pathname;
-    let __activeKey = document.title.replace(/\//g, '-');
+    let __activeKey = pathname.replace(/\//g, '-');
     const newPanes = [...panels];
 
     newPanes.push(item);
@@ -83,6 +83,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     console.log('removeIndex-----', removeIndex);
     console.log('tempAry----', tempAry);
     console.log('newPanes----', newPanes);
+
+    return;
 
     if (removeIndex > -1) {
       //如果有路由
@@ -120,8 +122,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const [tabPageAry, setTabPageAry] = useState([]);
 
   useEffect(() => {
-    // setTitle([...document.title.split('/')])
-    testFn(document.title);
+    // setTitle([...pathname.split('/')])
+    testFn(pathname);
   }, [history.location.pathname]);
 
   const testFn = (title) => {
