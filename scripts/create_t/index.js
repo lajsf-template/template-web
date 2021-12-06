@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 09:57:54
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-12-02 17:13:52
+ * @LastEditTime: 2021-12-06 15:10:43
  */
 const colors = require('colors');
 const fs = require('fs');
@@ -80,10 +80,10 @@ const doneWithFn = (res) => {
       function (error) {
         // 写入table以及样式
         fs.readFile(fileResolve('./template_index.tsx'), (err, data) => {
-          data = data.toString().replace(
-            /entityName/g,
-            argv.replace(/^\S/, (s) => s.toUpperCase()),
-          );
+          const entityNameStr =
+            entityName.slice(0, 1).toUpperCase() + entityName.slice(1);
+          data = data.toString().replace(/moduleName/g, entityNameStr);
+
           if (!err) {
             fs.writeFile(dirArgv + `/index.tsx`, data, function (error) {
               console.info(`${dirArgv}/index.tsx创建成功`.green);
@@ -100,12 +100,9 @@ const doneWithFn = (res) => {
 
         // 生成表单页面
         fs.readFile(fileResolve('./template_form.tsx'), (err, data) => {
-          data = data
-            .toString()
-            .replace(
-              /entityName/g,
-              argv.replace(/^\S/, (s) => s.toUpperCase()) + 'Form',
-            );
+          const entityNameStr =
+            entityName.slice(0, 1).toUpperCase() + entityName.slice(1) + 'Form';
+          data = data.toString().replace(/moduleName/g, entityNameStr);
           if (!err) {
             fs.mkdir(dirArgv + '/form', function () {
               fs.writeFile(dirArgv + `/form/index.tsx`, data, function (error) {
@@ -124,12 +121,12 @@ const doneWithFn = (res) => {
 
         // 生成详情页面
         fs.readFile(fileResolve('./template_detail.tsx'), (err, data) => {
-          data = data
-            .toString()
-            .replace(
-              /entityName/g,
-              argv.replace(/^\S/, (s) => s.toUpperCase()) + 'Detail',
-            );
+          const entityNameStr =
+            entityName.slice(0, 1).toUpperCase() +
+            entityName.slice(1) +
+            'Detail';
+          data = data.toString().replace(/moduleName/g, entityNameStr);
+
           if (!err) {
             fs.mkdir(dirArgv + '/detail', function () {
               fs.writeFile(

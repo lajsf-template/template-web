@@ -14,7 +14,7 @@ import styles from './index.less';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 
-function moduleName() {
+function RolesDetail() {
   const { state } = useLocation<{ kid: string }>();
   const [data, setdata] = useState({});
 
@@ -78,4 +78,4 @@ function moduleName() {
   );
 }
 
-export default moduleName;
+export default RolesDetail;

@@ -24,7 +24,7 @@ import { formData, title, requestUrl } from '../constants';
 import styles from './index.less';
 import axios from 'axios';
 
-function moduleName() {
+function RolesForm() {
   const { state } = useLocation<any>();
   const [formState, setformState] = useState<any>([]);
   const [form] = Form.useForm();
@@ -236,4 +236,4 @@ function moduleName() {
   );
 }
 
-export default moduleName;
+export default RolesForm;

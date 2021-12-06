@@ -24,7 +24,7 @@ import {
 import styles from './index.less';
 import axios from 'axios';
 
-function moduleName() {
+function Users() {
   const history = useHistory();
 
   const [tableData, settableData] = useState([]);
@@ -273,4 +273,4 @@ function moduleName() {
   );
 }
 
-export default moduleName;
+export default Users;

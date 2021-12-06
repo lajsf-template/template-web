@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-16 13:19:06
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-12-02 18:03:17
+ * @LastEditTime: 2021-12-02 16:43:18
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -13,7 +13,6 @@ import { Row, Button, Pagination, message, Modal } from 'antd';
 // import Table from '@/components/table';
 // import Search from '@/components/search';
 import { Table, Search } from 'ydk-web';
-
 import {
   argv,
   formData,
@@ -25,7 +24,7 @@ import {
 import styles from './index.less';
 import axios from 'axios';
 
-function moduleName() {
+function Feedback() {
   const history = useHistory();
 
   const [tableData, settableData] = useState([]);
@@ -274,4 +273,4 @@ function moduleName() {
   );
 }
 
-export default moduleName;
+export default Feedback;
