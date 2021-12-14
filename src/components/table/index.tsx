@@ -13,6 +13,7 @@ import {
   TableCurrentDataSource,
 } from 'antd/lib/table/interface';
 import { PageRequest } from '@/api/business';
+import 'antd/dist/antd.css';
 import './index.less';
 
 /** 父组件有两种刷新方式: currentPage(当前页刷新) | firstPage(第一页刷新) */

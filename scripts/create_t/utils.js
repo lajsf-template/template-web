@@ -5,7 +5,7 @@
  * @Email: suchiva@126.com
  * @Date: 2021-11-24 15:55:01
  * @LastEditors: zhanghang
- * @LastEditTime: 2021-11-26 15:17:16
+ * @LastEditTime: 2021-12-02 15:39:46
  */
 const fs = require('fs');
 const path = require('path');
@@ -310,6 +310,7 @@ const assembleConstants = (res, argv) => {
     ';';
   return data;
 };
+
 module.exports = {
   configJsonReqUrl,
   styleString,

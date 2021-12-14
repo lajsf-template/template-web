@@ -1,7 +1,17 @@
+/*
+ * @Description:
+ * @Version: 2.0
+ * @Autor: zhanghang
+ * @Email: suchiva@126.com
+ * @Date: 2021-11-16 09:28:37
+ * @LastEditors: zhanghang
+ * @LastEditTime: 2021-12-02 18:03:34
+ */
 import { LayoutProps } from 'antd/lib/layout';
 import React from 'react';
 import { LoginProvider, getLoginInfo } from '@/uses';
 import { history } from 'umi';
+import 'antd/dist/antd.css';
 
 let isSubApp = false;
 /**

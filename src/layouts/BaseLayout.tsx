@@ -11,6 +11,8 @@ import { Tabs, Breadcrumb } from 'antd';
 
 const { TabPane } = Tabs;
 
+import { navMap } from './navmap';
+
 export type BasicLayoutProps = {
   breadcrumbNameMap: Record<string, MenuDataItem>;
   route: ProLayoutProps['route'] & {
@@ -45,19 +47,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
 
   const [panels, setpanels] = useState(initialPanes);
   const pathname = history.location.pathname;
-  const [activeKey, setactiveKey] = useState<any>(
-    pathname.replace(/\//g, '-').substring(1, pathname.length),
-  );
-
-  const [title, setTitle] = useState([...document.title.split('/')]);
+  const [activeKey, setactiveKey] = useState<any>(pathname);
 
   // 切换
   const onChange = (activeKey: any) => {
-    const __activeKey = activeKey.substring(0, activeKey.length - 2);
+    const __activeKey = activeKey;
     setactiveKey(__activeKey);
-    console.log(activeKey);
-    console.log(__activeKey);
-    history.push('/' + __activeKey.replace(/\-/g, '/'));
+    history.push(__activeKey);
   };
 
   // 添加
@@ -68,40 +64,28 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     closable: boolean;
   }) => {
     const __pathname = history.location.pathname;
-    let __activeKey = document.title.replace(/\//g, '-');
     const newPanes = [...panels];
 
-    newPanes.push(item);
-    setpanels(newPanes);
-    setactiveKey(__activeKey);
+    setpanels([...newPanes, item]);
+    setactiveKey(__pathname);
   };
   // 删除
-  const remove = (targetKey: string) => {
+  const remove = (targetKey: any) => {
     const tempAry = [...tabPageAry];
     const removeIndex = tabPageAry.indexOf(targetKey);
     const newPanes = [...panels];
-    console.log('removeIndex-----', removeIndex);
-    console.log('tempAry----', tempAry);
-    console.log('newPanes----', newPanes);
 
     if (removeIndex > -1) {
       //如果有路由
       tempAry.splice(removeIndex, 1);
       newPanes.splice(removeIndex, 1);
     }
-    console.log('tempAry--2222--', tempAry);
-    console.log('newPanes--2222--', newPanes);
 
     setpanels([...newPanes]);
-    setactiveKey(newPanes[newPanes.length - 1]);
     setTabPageAry([...tempAry]);
+
     const ___newPanelsKey = newPanes[newPanes.length - 1].key;
-    history.push(
-      '/' +
-        ___newPanelsKey
-          .substring(0, ___newPanelsKey.length - 2)
-          .replace(/\-/g, '/'),
-    );
+    history.push(___newPanelsKey);
   };
 
   // 编辑
@@ -117,39 +101,33 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     setwindowheight(window.innerHeight);
   };
 
-  const [tabPageAry, setTabPageAry] = useState([]);
+  const [tabPageAry, setTabPageAry] = useState<any>([]);
 
   useEffect(() => {
-    // setTitle([...document.title.split('/')])
-    testFn(document.title);
+    testFn();
   }, [history.location.pathname]);
 
-  const testFn = (title) => {
-    const __pathname = history.location.pathname;
-    const __activeKey = title.replace(/\//g, '-');
-
-    const __title = title.replace(/\//g, '-').split('-');
-    setTitle([...__title]);
-
-    if (tabPageAry.indexOf(__activeKey) === -1) {
+  const testFn = () => {
+    const __pathname: string = history.location.pathname;
+    if (tabPageAry.indexOf(__pathname) === -1) {
       // 如果是新路由，则加入路由
-      if (__activeKey.split('-').length >= 2) {
+      if (__pathname.split('/').length >= 2) {
         // 如果是子页面
-        setTabPageAry([...tabPageAry, __activeKey]);
+        setTabPageAry([...tabPageAry, __pathname]);
         setTimeout(() => {
           add({
-            title: `${__title[__title.length - 1]}`,
-            content: `${__activeKey}`,
-            key: __activeKey,
+            title: `${__pathname}`,
+            content: `${__pathname}`,
+            key: __pathname,
             closable: false,
           });
-        }, 200);
+        }, 500);
       } else {
         // 如果是目录，就默认加载子页面
         // history.push()
       }
     }
-    setactiveKey(__activeKey);
+    setactiveKey(__pathname);
   };
 
   // 加载页面
@@ -190,12 +168,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         hideAdd
         type="editable-card"
         onChange={onChange}
+        defaultActiveKey={activeKey}
         activeKey={activeKey}
         onEdit={edit}
       >
         {panels.map((pane) => (
           <TabPane
-            tab={pane.title}
+            tab={navMap[pane.key.split('/')[pane.key.split('/').length - 1]]}
             key={pane.key}
             closable={true}
             style={{ display: 'none' }}
@@ -204,9 +183,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       </Tabs>
       <Breadcrumb>
         <Breadcrumb.Item>首页</Breadcrumb.Item>
-        <Breadcrumb.Item>{title[title.length - 3]}</Breadcrumb.Item>
-        <Breadcrumb.Item>{title[title.length - 2]}</Breadcrumb.Item>
-        <Breadcrumb.Item>{title[title.length - 1]}</Breadcrumb.Item>
+        {activeKey
+          .substring(1, activeKey.length)
+          .split('/')
+          .map((v: any, index: any) => (
+            <Breadcrumb.Item key={index}>{navMap[v]}</Breadcrumb.Item>
+          ))}
       </Breadcrumb>
       <div style={{ height: windowheight - 200 }}>{children}</div>
     </ProLayout>
